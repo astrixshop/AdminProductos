@@ -8,130 +8,75 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --green:#25D366;
-  --green-dark:#1aaa4f;
-  --bg:#0d0d0d;
-  --surface:#161616;
-  --surface2:#1e1e1e;
-  --border:#2a2a2a;
-  --text:#f0f0f0;
-  --text-muted:#666;
-  --red:#ff3b30;
+  --green:#25D366;--green-dark:#1aaa4f;--bg:#0d0d0d;--surface:#161616;
+  --surface2:#1e1e1e;--border:#2a2a2a;--text:#f0f0f0;--text-muted:#666;--red:#ff3b30;
 }
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-/* ─── AUTH SCREEN ─── */
-#authScreen{
-  position:fixed;inset:0;background:var(--bg);z-index:9999;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  gap:28px;
-}
+/* ─── AUTH ─── */
+#authScreen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:28px;}
 .auth-logo{font-family:'Bebas Neue',cursive;font-size:3rem;letter-spacing:10px;color:var(--green);text-align:center;}
 .auth-sub{color:var(--text-muted);font-size:0.78rem;letter-spacing:3px;text-transform:uppercase;margin-top:-20px;}
 .auth-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:36px 40px;width:340px;display:flex;flex-direction:column;align-items:center;gap:20px;}
-.fp-ring{
-  width:110px;height:110px;border-radius:50%;
-  border:3px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;cursor:pointer;transition:all 0.3s;background:#111;
-}
+.fp-ring{width:110px;height:110px;border-radius:50%;border:3px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;transition:all 0.3s;background:#111;}
 .fp-ring:hover{border-color:var(--green);}
 .fp-ring.scanning{border-color:var(--green);animation:pulse-ring 1.2s infinite;}
 .fp-ring.success{border-color:var(--green);background:#061a0d;}
 .fp-ring.error{border-color:var(--red);animation:shake 0.4s;}
-@keyframes pulse-ring{
-  0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,0.3);}
-  50%{box-shadow:0 0 0 16px rgba(37,211,102,0);}
-}
-@keyframes shake{
-  0%,100%{transform:translateX(0);}
-  25%{transform:translateX(-8px);}
-  75%{transform:translateX(8px);}
-}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,0.3);}50%{box-shadow:0 0 0 16px rgba(37,211,102,0);}}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
 .fp-icon{font-size:3rem;transition:all 0.3s;}
 .auth-msg{font-size:0.85rem;color:var(--text-muted);text-align:center;min-height:20px;transition:color 0.2s;}
 .auth-msg.ok{color:var(--green);}
 .auth-msg.err{color:var(--red);}
-.auth-hwid{font-size:0.68rem;color:#333;margin-top:4px;font-family:monospace;letter-spacing:1px;}
-.auth-btn{
-  width:100%;background:var(--green);color:#000;border:none;padding:13px;
-  border-radius:14px;font-weight:800;font-size:0.9rem;cursor:pointer;
-  letter-spacing:1px;transition:all 0.2s;font-family:'DM Sans',sans-serif;text-transform:uppercase;
-}
+.auth-hwid{font-size:0.65rem;color:#2a2a2a;margin-top:-8px;font-family:monospace;}
+.auth-btn{width:100%;background:var(--green);color:#000;border:none;padding:13px;border-radius:14px;font-weight:800;font-size:0.9rem;cursor:pointer;letter-spacing:1px;transition:all 0.2s;font-family:'DM Sans',sans-serif;text-transform:uppercase;}
 .auth-btn:hover{background:var(--green-dark);}
 .auth-btn:disabled{background:#2a2a2a;color:#444;cursor:not-allowed;}
 
-/* ─── SETTINGS MODAL (fingerprint manager) ─── */
-#settingsModal{
-  position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:8000;
-  display:none;align-items:center;justify-content:center;
-}
+/* ─── SETTINGS ─── */
+#settingsBtn{position:fixed;top:14px;left:20px;z-index:7000;background:transparent;border:1.5px solid var(--border);border-radius:10px;width:40px;height:40px;display:none;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all 0.2s;color:var(--text-muted);}
+#settingsBtn.visible{display:flex;}
+#settingsBtn:hover{border-color:var(--green);color:var(--green);}
+#settingsModal{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:8000;display:none;align-items:center;justify-content:center;}
 #settingsModal.open{display:flex;}
-.settings-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:24px;
-  padding:32px;width:360px;max-width:95vw;
-}
+.settings-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:32px;width:370px;max-width:95vw;}
 .settings-title{font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:4px;color:var(--green);margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;}
-.settings-close{background:transparent;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer;line-height:1;}
-.fp-slot{
-  background:var(--surface2);border:1px solid var(--border);border-radius:14px;
-  padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;
-}
+.settings-close{background:transparent;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer;}
+.fp-slot{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;}
 .fp-slot-icon{font-size:1.8rem;}
 .fp-slot-info{flex:1;}
 .fp-slot-label{font-size:0.8rem;font-weight:700;margin-bottom:2px;}
 .fp-slot-sub{font-size:0.68rem;color:var(--text-muted);}
-.fp-slot-empty{color:var(--text-muted);}
-.fp-action-btn{
-  padding:7px 14px;border-radius:10px;font-size:0.75rem;font-weight:700;
-  cursor:pointer;border:none;transition:all 0.2s;font-family:'DM Sans',sans-serif;
-}
+.fp-action-btn{padding:7px 14px;border-radius:10px;font-size:0.75rem;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
 .fp-del-btn{background:#1a0606;color:var(--red);border:1px solid #3a1010;}
 .fp-del-btn:hover{background:var(--red);color:#fff;}
-.fp-add-btn{background:#061a0d;color:var(--green);border:1px solid #0d4020;}
-.fp-add-btn:hover{background:var(--green);color:#000;}
-.fp-add-btn:disabled{background:#1a1a1a;color:#444;border-color:#222;cursor:not-allowed;}
-.settings-note{font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:16px;line-height:1.5;}
+.settings-note{font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:16px;line-height:1.6;}
+.settings-loading{text-align:center;color:var(--text-muted);font-size:0.85rem;padding:20px;}
 
-/* ─── SETTINGS GEAR BUTTON ─── */
-#settingsBtn{
-  position:fixed;top:14px;left:20px;z-index:7000;
-  background:transparent;border:1.5px solid var(--border);
-  border-radius:10px;width:40px;height:40px;
-  display:none;align-items:center;justify-content:center;
-  cursor:pointer;font-size:1.1rem;transition:all 0.2s;color:var(--text-muted);
-}
-#settingsBtn.visible{display:flex;}
-#settingsBtn:hover{border-color:var(--green);color:var(--green);}
-
-/* ─── TOPBAR ─── */
+/* ─── TOPBAR & PANEL (original) ─── */
 .topbar{background:var(--surface);border-bottom:2px solid var(--green);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .topbar-logo{font-family:'Bebas Neue',cursive;font-size:1.6rem;letter-spacing:7px;color:var(--green);}
 .topbar-sub{font-size:0.7rem;color:var(--text-muted);margin-top:1px;letter-spacing:2px;text-transform:uppercase;}
 .conn-status{font-size:0.75rem;color:var(--text-muted);letter-spacing:1px;}
 .conn-status.ok{color:var(--green);}
 .conn-status.err{color:var(--red);}
-
 .main{max-width:1200px;margin:auto;padding:28px 20px;display:grid;grid-template-columns:380px 1fr;gap:22px;}
 @media(max-width:860px){.main{grid-template-columns:1fr;}}
-
 .panel{background:var(--surface);border-radius:20px;padding:26px;border:1px solid var(--border);}
 .panel-title{font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:3px;color:var(--green);margin-bottom:22px;text-transform:uppercase;display:flex;align-items:center;gap:10px;}
 .panel-title span{font-size:1.2rem;}
-
 .field{margin-bottom:16px;}
 .field label{display:block;font-size:0.72rem;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.2px;font-weight:600;}
 .field input,.field select{width:100%;background:#111;border:1.5px solid var(--border);border-radius:12px;padding:12px 16px;color:var(--text);font-size:0.93rem;outline:none;transition:border 0.2s;font-family:'DM Sans',sans-serif;}
 .field input:focus,.field select:focus{border-color:var(--green);}
 .field select option{background:#111;}
-
 .img-upload{border:2px dashed var(--border);border-radius:14px;padding:22px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;background:#0d0d0d;}
 .img-upload:hover{border-color:var(--green);background:#0d150f;}
 .img-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .img-upload .icon{font-size:2.2rem;margin-bottom:8px;}
 .img-upload p{color:var(--text-muted);font-size:0.83rem;}
 .preview-img{width:100%;max-height:200px;object-fit:cover;border-radius:12px;margin-top:12px;display:none;}
-
 .toggle-wrap{display:flex;align-items:center;gap:12px;padding:4px 0;}
 .toggle{position:relative;width:44px;height:24px;flex-shrink:0;}
 .toggle input{opacity:0;width:0;height:0;}
@@ -140,27 +85,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 input:checked+.slider{background:var(--green);}
 input:checked+.slider:before{transform:translateX(20px);background:#fff;}
 .toggle-label{font-size:0.88rem;color:#aaa;}
-
 .submit-btn{width:100%;background:var(--green);color:#000;border:none;padding:14px;border-radius:14px;font-weight:800;font-size:0.95rem;cursor:pointer;letter-spacing:1px;transition:all 0.2s;margin-top:8px;font-family:'DM Sans',sans-serif;text-transform:uppercase;}
 .submit-btn:hover{background:var(--green-dark);}
 .submit-btn:disabled{background:#2a2a2a;color:#444;cursor:not-allowed;}
-
 .status{padding:12px 16px;border-radius:12px;margin-top:12px;font-size:0.88rem;font-weight:600;display:none;}
 .status.ok{background:#061a0d;color:var(--green);border:1px solid #0d4020;}
 .status.err{background:#1a0606;color:#ff5c5c;border:1px solid #4a1010;}
 .status.info{background:#06091a;color:#7b8cde;border:1px solid #1a2060;}
-
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;}
 .stat{background:var(--surface2);border-radius:14px;padding:16px;border:1px solid var(--border);text-align:center;}
 .stat .num{font-family:'Bebas Neue',cursive;font-size:2rem;letter-spacing:2px;color:var(--green);}
 .stat .lbl{font-size:0.68rem;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
-
 .filter-bar{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none;flex-wrap:wrap;}
 .filter-bar::-webkit-scrollbar{display:none;}
 .filter-btn{background:transparent;border:1.5px solid var(--border);border-radius:100px;padding:6px 14px;color:var(--text-muted);font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-family:'DM Sans',sans-serif;letter-spacing:0.5px;text-transform:uppercase;}
 .filter-btn:hover{border-color:var(--green);color:var(--green);}
 .filter-btn.active{background:var(--green);border-color:var(--green);color:#000;}
-
 .prod-row{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);animation:fadeIn 0.3s ease;}
 .prod-row:last-child{border-bottom:none;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
@@ -179,7 +119,7 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
 </head>
 <body>
 
-<!-- ─── AUTH SCREEN ─── -->
+<!-- AUTH SCREEN -->
 <div id="authScreen">
   <div>
     <div class="auth-logo">ASTRYX</div>
@@ -189,48 +129,31 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
     <div class="fp-ring" id="fpRing" onclick="startAuth()">
       <div class="fp-icon" id="fpIcon">🫆</div>
     </div>
-    <div class="auth-msg" id="authMsg">Tocá para autenticarte con huella</div>
+    <div class="auth-msg" id="authMsg">Cargando...</div>
     <div class="auth-hwid" id="hwLabel"></div>
-    <button class="auth-btn" id="authBtn" onclick="startAuth()">Verificar Huella</button>
+    <button class="auth-btn" id="authBtn" onclick="startAuth()" disabled>Verificar</button>
   </div>
 </div>
 
-<!-- ─── SETTINGS GEAR ─── -->
-<button id="settingsBtn" onclick="openSettings()" title="Administrar huellas">⚙️</button>
+<!-- SETTINGS GEAR -->
+<button id="settingsBtn" onclick="openSettings()" title="Administrar accesos">⚙️</button>
 
-<!-- ─── SETTINGS MODAL ─── -->
+<!-- SETTINGS MODAL -->
 <div id="settingsModal">
   <div class="settings-card">
     <div class="settings-title">
-      <span>🔐 Huellas</span>
+      <span>🔐 Dispositivos Autorizados</span>
       <button class="settings-close" onclick="closeSettings()">✕</button>
     </div>
-
-    <div id="fpSlot1" class="fp-slot">
-      <div class="fp-slot-icon">🫆</div>
-      <div class="fp-slot-info">
-        <div class="fp-slot-label" id="slot1Label">Ranura 1 — Vacía</div>
-        <div class="fp-slot-sub" id="slot1Sub">Sin huella registrada</div>
-      </div>
-      <div id="slot1Btn"></div>
-    </div>
-
-    <div id="fpSlot2" class="fp-slot">
-      <div class="fp-slot-icon">🫆</div>
-      <div class="fp-slot-info">
-        <div class="fp-slot-label" id="slot2Label">Ranura 2 — Vacía</div>
-        <div class="fp-slot-sub" id="slot2Sub">Sin huella registrada</div>
-      </div>
-      <div id="slot2Btn"></div>
-    </div>
-
+    <div id="slotsContainer"><div class="settings-loading">Cargando...</div></div>
     <div class="settings-note">
-      Máximo 2 huellas. Para agregar una nueva, primero eliminá una existente.
+      Máximo 2 dispositivos. Los primeros 2 en entrar quedan registrados.<br>
+      Para revocar acceso, eliminá el dispositivo.
     </div>
   </div>
 </div>
 
-<!-- ─── TOPBAR ─── -->
+<!-- TOPBAR -->
 <div class="topbar" id="mainTopbar" style="display:none;">
   <div style="padding-left:52px;">
     <div class="topbar-logo">ASTRYX</div>
@@ -239,18 +162,14 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
   <div class="conn-status" id="connStatus">Conectando...</div>
 </div>
 
-<!-- ─── MAIN CONTENT ─── -->
+<!-- MAIN CONTENT -->
 <div class="main" id="mainContent" style="display:none;">
-
-  <!-- ─── FORM ─── -->
   <div class="panel">
     <div class="panel-title"><span>➕</span> Nuevo Producto</div>
-
     <div class="field">
       <label>Nombre del producto</label>
       <input type="text" id="nombre" placeholder="Ej: Remera negra oversize">
     </div>
-
     <div class="field">
       <label>Imagen</label>
       <div class="img-upload" id="uploadZone">
@@ -260,7 +179,6 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
       </div>
       <img id="preview" class="preview-img">
     </div>
-
     <div class="field">
       <label>Tipo</label>
       <select id="tipo">
@@ -271,7 +189,6 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
         <option value="Ropa Interior">Ropa Interior</option>
       </select>
     </div>
-
     <div class="field">
       <label>Género</label>
       <select id="genero">
@@ -279,7 +196,6 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
         <option value="Mujer">Mujer</option>
       </select>
     </div>
-
     <div class="field">
       <div class="toggle-wrap" style="margin-bottom:12px;">
         <label class="toggle"><input type="checkbox" id="sinPrecio" onchange="togglePrecio()"><span class="slider"></span></label>
@@ -290,28 +206,23 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
         <input type="number" id="precio" placeholder="Ej: 150000">
       </div>
     </div>
-
     <div class="field">
       <div class="toggle-wrap">
         <label class="toggle"><input type="checkbox" id="agotado"><span class="slider"></span></label>
         <span class="toggle-label">Marcar como agotado</span>
       </div>
     </div>
-
     <button class="submit-btn" id="submitBtn" onclick="subirProducto()">↑ Subir Producto</button>
     <div class="status" id="status"></div>
   </div>
 
-  <!-- ─── PRODUCTS LIST ─── -->
   <div class="panel">
     <div class="panel-title"><span>📦</span> Productos</div>
-
     <div class="stats">
       <div class="stat"><div class="num" id="totalCount">-</div><div class="lbl">Total</div></div>
       <div class="stat"><div class="num" id="availCount">-</div><div class="lbl">Disponibles</div></div>
       <div class="stat"><div class="num" id="outCount">-</div><div class="lbl">Agotados</div></div>
     </div>
-
     <div class="filter-bar">
       <button class="filter-btn active" data-cat="all" onclick="filterProducts('all')">Todos</button>
       <button class="filter-btn" data-cat="Remeras" onclick="filterProducts('Remeras')">Remeras</button>
@@ -322,19 +233,15 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
       <button class="filter-btn" data-cat="Hombre" onclick="filterByGenero('Hombre')">Hombre</button>
       <button class="filter-btn" data-cat="Mujer" onclick="filterByGenero('Mujer')">Mujer</button>
     </div>
-
     <div id="productsList"><div class="empty">Cargando...</div></div>
   </div>
-
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* ════════════════════════════════════════
-   FIREBASE CONFIG (original sin cambios)
-════════════════════════════════════════ */
+/* ── Firebase config original ── */
 function xd(a,k){var r="";for(var i=0;i<a.length;i++){r+=String.fromCharCode(a[i]^k.charCodeAt(i%k.length));}return r;}
 var K="AstryxK3y!2026";
 var cfg={
@@ -352,156 +259,163 @@ var GR=xd([32,0,0,0,16,0,24,71,22,83,87],K);
 const app = initializeApp(cfg);
 const db = getFirestore(app);
 
-/* ════════════════════════════════════════
-   HWID — fingerprint del navegador/dispositivo
-════════════════════════════════════════ */
+/* ── HWID: fingerprint del dispositivo/navegador ── */
 async function getHWID() {
-  const nav = window.navigator;
-  const screen = window.screen;
   const raw = [
-    nav.userAgent,
-    nav.language,
-    nav.hardwareConcurrency,
+    navigator.userAgent,
+    navigator.language,
+    navigator.hardwareConcurrency,
     screen.colorDepth,
     screen.width + "x" + screen.height,
-    nav.platform || "",
+    navigator.platform || "",
     Intl.DateTimeFormat().resolvedOptions().timeZone,
-    nav.maxTouchPoints,
+    navigator.maxTouchPoints,
   ].join("|");
-  const encoder = new TextEncoder();
-  const data = encoder.encode(raw);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("").substring(0, 32);
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(raw));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("").substring(0,32);
 }
 
-/* ════════════════════════════════════════
-   STORAGE — guarda huellas + HWIDs en localStorage
-   Estructura: { slots: [ {credId, hwid, date}, null ] }
-════════════════════════════════════════ */
-const STORE_KEY = "astryx_auth_v1";
+/* ── WebAuthn helpers ── */
+function b64url(buf){return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=/g,"");}
+function fromB64url(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return Uint8Array.from(atob(s),c=>c.charCodeAt(0)).buffer;}
 
-function loadStore() {
-  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || { slots: [null, null] }; }
-  catch { return { slots: [null, null] }; }
-}
-function saveStore(s) { localStorage.setItem(STORE_KEY, JSON.stringify(s)); }
-
-/* ════════════════════════════════════════
-   WEBAUTHN helpers
-════════════════════════════════════════ */
-function b64url(buf) {
-  return btoa(String.fromCharCode(...new Uint8Array(buf)))
-    .replace(/\+/g,"-").replace(/\//g,"_").replace(/=/g,"");
-}
-function fromB64url(s) {
-  s = s.replace(/-/g,"+").replace(/_/g,"/");
-  while(s.length%4) s+="=";
-  return Uint8Array.from(atob(s), c=>c.charCodeAt(0)).buffer;
-}
-
-async function registerFingerprint(slotIndex) {
-  const hwid = await getHWID();
+async function registerBiometric(hwid) {
   const challenge = crypto.getRandomValues(new Uint8Array(32));
-  const credential = await navigator.credentials.create({
-    publicKey: {
+  const cred = await navigator.credentials.create({
+    publicKey:{
       challenge,
-      rp: { name: "ASTRYX Admin", id: location.hostname || "localhost" },
-      user: {
-        id: new TextEncoder().encode("astryx-slot-" + slotIndex),
-        name: "Admin " + (slotIndex + 1),
-        displayName: "Administrador " + (slotIndex + 1),
-      },
-      pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
-      authenticatorSelection: {
-        authenticatorAttachment: "platform",
-        userVerification: "required",
-      },
-      timeout: 60000,
+      rp:{name:"ASTRYX Admin", id: location.hostname||"localhost"},
+      user:{id:new TextEncoder().encode("astryx-"+hwid), name:"Admin", displayName:"Administrador"},
+      pubKeyCredParams:[{type:"public-key",alg:-7},{type:"public-key",alg:-257}],
+      authenticatorSelection:{authenticatorAttachment:"platform",userVerification:"required"},
+      timeout:60000,
     }
   });
-  return { credId: b64url(credential.rawId), hwid, date: new Date().toLocaleDateString("es-PY") };
+  return b64url(cred.rawId);
 }
 
-async function verifyFingerprint(credId) {
+async function verifyBiometric(credId) {
   const challenge = crypto.getRandomValues(new Uint8Array(32));
   const assertion = await navigator.credentials.get({
-    publicKey: {
+    publicKey:{
       challenge,
-      allowCredentials: [{ id: fromB64url(credId), type: "public-key" }],
-      userVerification: "required",
-      timeout: 60000,
+      allowCredentials:[{id:fromB64url(credId),type:"public-key"}],
+      userVerification:"required",
+      timeout:60000,
     }
   });
   return !!assertion;
 }
 
-/* ════════════════════════════════════════
-   AUTH FLOW
-════════════════════════════════════════ */
-let currentHWID = "";
+/* ── Estado global ── */
+let myHWID = "";
+let myCredId = ""; // guardado en localStorage por dispositivo
 
-async function initAuth() {
-  currentHWID = await getHWID();
-  document.getElementById("hwLabel").textContent = "HWID: " + currentHWID.substring(0,16) + "...";
+const LOCAL_CRED_KEY = "astryx_cred_v1";
 
-  const store = loadStore();
-  const hasAny = store.slots.some(s => s !== null);
+function loadLocalCred() { return localStorage.getItem(LOCAL_CRED_KEY) || ""; }
+function saveLocalCred(credId) { localStorage.setItem(LOCAL_CRED_KEY, credId); }
 
-  if (!hasAny) {
-    // Primera vez: modo registro automático
-    setAuthMsg("Primera vez — registrá tu huella", "");
-    document.getElementById("authBtn").textContent = "Registrar Huella";
-  } else {
-    setAuthMsg("Autenticá con tu huella dactilar", "");
-  }
-}
-
-function setAuthMsg(msg, type) {
+/* ── UI helpers ── */
+function setAuthMsg(msg, type="") {
   const el = document.getElementById("authMsg");
   el.textContent = msg;
-  el.className = "auth-msg" + (type ? " " + type : "");
+  el.className = "auth-msg" + (type?" "+type:"");
 }
-
 function setFpState(state) {
   const ring = document.getElementById("fpRing");
   const icon = document.getElementById("fpIcon");
-  ring.className = "fp-ring" + (state ? " " + state : "");
-  if(state === "scanning") icon.textContent = "🫆";
-  else if(state === "success") icon.textContent = "✅";
-  else if(state === "error") icon.textContent = "❌";
-  else icon.textContent = "🫆";
+  ring.className = "fp-ring"+(state?" "+state:"");
+  icon.textContent = state==="success"?"✅":state==="error"?"❌":"🫆";
 }
 
-window.startAuth = async function() {
-  const store = loadStore();
-  const hasAny = store.slots.some(s => s !== null);
+/* ════════════════════════════════════════
+   INIT AUTH — consulta Firestore en tiempo real
+════════════════════════════════════════ */
+async function initAuth() {
+  myHWID = await getHWID();
+  myCredId = loadLocalCred();
+  document.getElementById("hwLabel").textContent = "ID: "+myHWID.substring(0,16)+"...";
 
-  if (!hasAny) {
-    // Primer registro
-    await doRegister(0);
-    return;
+  // Escuchar en tiempo real la colección admin_devices
+  onSnapshot(collection(db, "admin_devices"), (snapshot) => {
+    const devices = {};
+    snapshot.forEach(d => { devices[d.id] = d.data(); });
+    handleAuthState(devices);
+  }, (err) => {
+    setAuthMsg("❌ Sin conexión a base de datos", "err");
+  });
+}
+
+function handleAuthState(devices) {
+  const count = Object.keys(devices).length;
+  const myDevice = devices[myHWID];
+
+  if (myDevice) {
+    // Este dispositivo está registrado
+    setAuthMsg("Autenticá con tu huella", "");
+    document.getElementById("authBtn").disabled = false;
+    document.getElementById("authBtn").textContent = "Verificar Huella";
+    document.getElementById("authBtn").onclick = () => doVerify(myDevice.credId);
+  } else if (count < 2) {
+    // Hay lugar, puede registrarse
+    setAuthMsg("Primer acceso — registrá tu huella", "");
+    document.getElementById("authBtn").disabled = false;
+    document.getElementById("authBtn").textContent = count === 0 ? "Registrar Huella" : "Registrar (último lugar)";
+    document.getElementById("authBtn").onclick = doRegister;
+  } else {
+    // Lleno y este dispositivo no está
+    setAuthMsg("❌ Acceso no autorizado", "err");
+    document.getElementById("authBtn").disabled = true;
+    document.getElementById("authBtn").textContent = "Sin acceso";
+    setFpState("error");
   }
 
-  // Verificar huella existente
+  document.getElementById("fpRing").onclick = document.getElementById("authBtn").onclick;
+}
+
+/* ── Registro: guarda HWID + credId en Firestore ── */
+async function doRegister() {
   setFpState("scanning");
-  setAuthMsg("Escaneando huella...", "");
+  setAuthMsg("Registrá tu huella ahora...", "");
   document.getElementById("authBtn").disabled = true;
 
-  // Primero verificar HWID
-  const matchedSlot = store.slots.find(s => s && s.hwid === currentHWID);
+  try {
+    const credId = await registerBiometric(myHWID);
+    saveLocalCred(credId);
 
-  if (!matchedSlot) {
+    // Guardar en Firestore — doc ID = HWID
+    await setDoc(doc(db, "admin_devices", myHWID), {
+      hwid: myHWID,
+      credId: credId,
+      fecha: new Date().toLocaleDateString("es-PY"),
+      dispositivo: navigator.userAgent.substring(0,80),
+    });
+
+    setFpState("success");
+    setAuthMsg("✅ Registrado. Entrando...", "ok");
+    setTimeout(unlockPanel, 800);
+  } catch(e) {
     setFpState("error");
-    setAuthMsg("❌ Dispositivo no autorizado", "err");
+    setAuthMsg("❌ Error: " + (e.message||e), "err");
     document.getElementById("authBtn").disabled = false;
-    setTimeout(() => { setFpState(""); setAuthMsg("Tocá para autenticarte con huella", ""); }, 2500);
-    return;
+    setTimeout(()=>{ setFpState(""); setAuthMsg("Tocá para intentar de nuevo",""); }, 2500);
   }
+}
+
+/* ── Verificación: comprueba huella local ── */
+async function doVerify(credId) {
+  setFpState("scanning");
+  setAuthMsg("Verificando huella...", "");
+  document.getElementById("authBtn").disabled = true;
+
+  // Usar credId local si existe, sino el de Firestore
+  const localCred = loadLocalCred();
+  const credToUse = localCred || credId;
 
   try {
-    const ok = await verifyFingerprint(matchedSlot.credId);
-    if (ok) {
+    const ok = await verifyBiometric(credToUse);
+    if(ok) {
       setFpState("success");
       setAuthMsg("✅ Acceso concedido", "ok");
       setTimeout(unlockPanel, 800);
@@ -512,36 +426,7 @@ window.startAuth = async function() {
     setFpState("error");
     setAuthMsg("❌ Huella no reconocida", "err");
     document.getElementById("authBtn").disabled = false;
-    setTimeout(() => { setFpState(""); setAuthMsg("Tocá para intentar de nuevo", ""); }, 2500);
-  }
-};
-
-async function doRegister(slotIndex) {
-  const store = loadStore();
-
-  // Verificar límite de 2
-  const filled = store.slots.filter(s => s !== null).length;
-  if (filled >= 2 && store.slots[slotIndex] !== null) {
-    setAuthMsg("❌ Límite de 2 huellas alcanzado", "err");
-    return;
-  }
-
-  setFpState("scanning");
-  setAuthMsg("Registrá tu huella ahora...", "");
-  document.getElementById("authBtn").disabled = true;
-
-  try {
-    const data = await registerFingerprint(slotIndex);
-    store.slots[slotIndex] = data;
-    saveStore(store);
-    setFpState("success");
-    setAuthMsg("✅ Huella registrada. Entrando...", "ok");
-    setTimeout(unlockPanel, 900);
-  } catch(e) {
-    setFpState("error");
-    setAuthMsg("❌ No se pudo registrar: " + (e.message || e), "err");
-    document.getElementById("authBtn").disabled = false;
-    setTimeout(() => { setFpState(""); setAuthMsg("Tocá para intentar de nuevo", ""); }, 2500);
+    setTimeout(()=>{ setFpState(""); setAuthMsg("Tocá para intentar de nuevo",""); }, 2500);
   }
 }
 
@@ -554,80 +439,69 @@ function unlockPanel() {
 }
 
 /* ════════════════════════════════════════
-   SETTINGS MODAL
+   SETTINGS — muestra dispositivos en tiempo real
 ════════════════════════════════════════ */
 window.openSettings = function() {
-  renderSettingsSlots();
   document.getElementById("settingsModal").classList.add("open");
+  // escuchar en tiempo real
+  onSnapshot(collection(db, "admin_devices"), (snap) => {
+    const devs = [];
+    snap.forEach(d => devs.push({id:d.id, ...d.data()}));
+    renderSettings(devs);
+  });
 };
 
 window.closeSettings = function() {
   document.getElementById("settingsModal").classList.remove("open");
 };
 
-// Cerrar modal al click fuera
-document.getElementById("settingsModal").addEventListener("click", function(e) {
-  if(e.target === this) closeSettings();
+document.getElementById("settingsModal").addEventListener("click", function(e){
+  if(e.target===this) closeSettings();
 });
 
-function renderSettingsSlots() {
-  const store = loadStore();
-  const filled = store.slots.filter(s => s !== null).length;
+function renderSettings(devs) {
+  const container = document.getElementById("slotsContainer");
 
-  for (let i = 0; i < 2; i++) {
-    const slot = store.slots[i];
-    const labelEl = document.getElementById("slot" + (i+1) + "Label");
-    const subEl = document.getElementById("slot" + (i+1) + "Sub");
-    const btnEl = document.getElementById("slot" + (i+1) + "Btn");
-
-    if (slot) {
-      labelEl.textContent = "Ranura " + (i+1) + " — Registrada";
-      labelEl.style.color = "var(--green)";
-      subEl.textContent = "HWID: " + slot.hwid.substring(0,14) + "... · " + slot.date;
-      btnEl.innerHTML = `<button class="fp-action-btn fp-del-btn" onclick="deleteSlot(${i})">🗑 Borrar</button>`;
-    } else {
-      labelEl.textContent = "Ranura " + (i+1) + " — Vacía";
-      labelEl.style.color = "";
-      subEl.textContent = "Sin huella registrada";
-      const canAdd = filled < 2;
-      btnEl.innerHTML = `<button class="fp-action-btn fp-add-btn" ${canAdd?"":"disabled"} onclick="addSlot(${i})">➕ Agregar</button>`;
-    }
-  }
-}
-
-window.deleteSlot = function(i) {
-  if(!confirm("¿Eliminar esta huella? El usuario perderá acceso.")) return;
-  const store = loadStore();
-  store.slots[i] = null;
-  saveStore(store);
-  renderSettingsSlots();
-};
-
-window.addSlot = async function(slotIndex) {
-  const store = loadStore();
-  const filled = store.slots.filter(s => s !== null).length;
-
-  if (filled >= 2) {
-    alert("Límite de 2 huellas alcanzado. Borrá una primero.");
+  if(devs.length === 0) {
+    container.innerHTML = `<div class="settings-loading">Sin dispositivos registrados</div>`;
     return;
   }
 
-  // Deshabilitar botones durante el registro
-  document.querySelectorAll(".fp-add-btn").forEach(b => b.disabled = true);
+  container.innerHTML = devs.map((d,i) => `
+    <div class="fp-slot">
+      <div class="fp-slot-icon">${d.hwid === myHWID ? "📱" : "💻"}</div>
+      <div class="fp-slot-info">
+        <div class="fp-slot-label" style="color:var(--green)">
+          Dispositivo ${i+1} ${d.hwid === myHWID ? "· (este)" : ""}
+        </div>
+        <div class="fp-slot-sub">ID: ${d.hwid.substring(0,16)}... · ${d.fecha||""}</div>
+      </div>
+      <button class="fp-action-btn fp-del-btn" onclick="deleteDevice('${d.hwid}')">🗑 Revocar</button>
+    </div>
+  `).join("") + (devs.length < 2 ? `
+    <div class="fp-slot" style="border-style:dashed;opacity:0.5;">
+      <div class="fp-slot-icon">➕</div>
+      <div class="fp-slot-info">
+        <div class="fp-slot-label">Ranura libre</div>
+        <div class="fp-slot-sub">El próximo dispositivo en entrar se registra automáticamente</div>
+      </div>
+    </div>
+  ` : "");
+}
 
+window.deleteDevice = async function(hwid) {
+  if(!confirm("¿Revocar acceso a este dispositivo?")) return;
   try {
-    const data = await registerFingerprint(slotIndex);
-    store.slots[slotIndex] = data;
-    saveStore(store);
-    renderSettingsSlots();
+    await deleteDoc(doc(db, "admin_devices", hwid));
+    // Si es el propio dispositivo, borrar cred local
+    if(hwid === myHWID) localStorage.removeItem(LOCAL_CRED_KEY);
   } catch(e) {
-    alert("Error al registrar huella: " + (e.message || e));
-    renderSettingsSlots();
+    alert("Error al revocar: "+e);
   }
 };
 
 /* ════════════════════════════════════════
-   FIREBASE + PANEL (original sin cambios)
+   FIREBASE PRODUCTOS (original sin cambios)
 ════════════════════════════════════════ */
 function initFirebase() {
   document.getElementById("connStatus").textContent = "✅ Conectado";
@@ -660,7 +534,7 @@ function initFirebase() {
 
 function setStatus(msg, type){
   const s = document.getElementById("status");
-  s.textContent = msg; s.className = "status " + type; s.style.display = "block";
+  s.textContent = msg; s.className = "status "+type; s.style.display = "block";
 }
 
 window.togglePrecio = function(){
@@ -669,29 +543,23 @@ window.togglePrecio = function(){
 };
 
 async function uploadToGitHub(file, fileName){
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve,reject)=>{
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = async () => {
+    reader.onload = async()=>{
       const content = reader.result.split(",")[1];
-      try {
-        let sha = undefined;
-        const check = await fetch(`https://api.github.com/repos/${GU}/${GR}/contents/images/${fileName}`,{
-          headers:{Authorization:`token ${GT}`}
-        });
-        if(check.ok){ const existing = await check.json(); sha = existing.sha; }
-        const body = {message:`upload ${fileName}`, content};
-        if(sha) body.sha = sha;
-        const res = await fetch(`https://api.github.com/repos/${GU}/${GR}/contents/images/${fileName}`,{
-          method:"PUT",
-          headers:{Authorization:`token ${GT}`,"Content-Type":"application/json"},
-          body:JSON.stringify(body)
-        });
-        if(!res.ok){ const e = await res.json(); reject(e.message); return; }
+      try{
+        let sha=undefined;
+        const check = await fetch(`https://api.github.com/repos/${GU}/${GR}/contents/images/${fileName}`,{headers:{Authorization:`token ${GT}`}});
+        if(check.ok){const existing=await check.json();sha=existing.sha;}
+        const body={message:`upload ${fileName}`,content};
+        if(sha) body.sha=sha;
+        const res = await fetch(`https://api.github.com/repos/${GU}/${GR}/contents/images/${fileName}`,{method:"PUT",headers:{Authorization:`token ${GT}`,"Content-Type":"application/json"},body:JSON.stringify(body)});
+        if(!res.ok){const e=await res.json();reject(e.message);return;}
         resolve(`https://cdn.jsdelivr.net/gh/${GU}/${GR}/images/${fileName}`);
-      } catch(e){ reject(e.toString()); }
+      }catch(e){reject(e.toString());}
     };
-    reader.onerror = e => reject(e.toString());
+    reader.onerror=e=>reject(e.toString());
   });
 }
 
@@ -705,103 +573,71 @@ window.subirProducto = async function(){
   const tipo = document.getElementById("tipo").value;
   const genero = document.getElementById("genero").value;
 
-  if(!nombre){ setStatus("⚠️ Ingresá el nombre del producto","err"); return; }
-  if(!sinPrecio && !precio){ setStatus("⚠️ Ingresá el precio o activá 'Precio a consultar'","err"); return; }
-  if(!file){ setStatus("⚠️ Seleccioná una imagen","err"); return; }
+  if(!nombre){setStatus("⚠️ Ingresá el nombre del producto","err");return;}
+  if(!sinPrecio&&!precio){setStatus("⚠️ Ingresá el precio o activá 'Precio a consultar'","err");return;}
+  if(!file){setStatus("⚠️ Seleccioná una imagen","err");return;}
 
-  btn.disabled = true; btn.textContent = "Subiendo...";
+  btn.disabled=true; btn.textContent="Subiendo...";
   setStatus("📤 Subiendo imagen a GitHub...","info");
 
-  try {
-    const ext = file.name.split(".").pop().toLowerCase();
-    const fileName = nombre.replace(/\s+/g,"-").replace(/[^a-zA-Z0-9\-]/g,"").toLowerCase()+"-"+Date.now()+"."+ext;
-    const imageUrl = await uploadToGitHub(file, fileName);
-
+  try{
+    const ext=file.name.split(".").pop().toLowerCase();
+    const fileName=nombre.replace(/\s+/g,"-").replace(/[^a-zA-Z0-9\-]/g,"").toLowerCase()+"-"+Date.now()+"."+ext;
+    const imageUrl=await uploadToGitHub(file,fileName);
     setStatus("💾 Guardando en base de datos...","info");
-
-    await addDoc(collection(db,"productos"),{
-      nombre,
-      categoria: tipo,
-      genero,
-      precio: sinPrecio ? null : parseFloat(precio),
-      sinPrecio, imagen: imageUrl, agotado,
-      createdAt: Date.now()
-    });
-
+    await addDoc(collection(db,"productos"),{nombre,categoria:tipo,genero,precio:sinPrecio?null:parseFloat(precio),sinPrecio,imagen:imageUrl,agotado,createdAt:Date.now()});
     setStatus("✅ Producto subido correctamente","ok");
-    ["nombre","precio"].forEach(id => document.getElementById(id).value="");
+    ["nombre","precio"].forEach(id=>document.getElementById(id).value="");
     document.getElementById("imageFile").value="";
     document.getElementById("preview").style.display="none";
     document.getElementById("uploadLabel").textContent="Tocá para seleccionar imagen";
     document.getElementById("sinPrecio").checked=false;
     document.getElementById("agotado").checked=false;
     document.getElementById("precioField").style.display="block";
-  } catch(e){
-    setStatus("❌ Error: "+e,"err");
-  } finally {
-    btn.disabled=false; btn.textContent="↑ Subir Producto";
-  }
+  }catch(e){setStatus("❌ Error: "+e,"err");}
+  finally{btn.disabled=false;btn.textContent="↑ Subir Producto";}
 };
 
 window.deleteProduct = async function(id){
   if(!confirm("¿Eliminar este producto?")) return;
-  try { await deleteDoc(doc(db,"productos",id)); }
-  catch(e){ alert("Error al eliminar: "+e); }
+  try{await deleteDoc(doc(db,"productos",id));}
+  catch(e){alert("Error al eliminar: "+e);}
 };
 
-let currentFilter = "all";
-let currentGeneroFilter = null;
-let allItems = [];
+let currentFilter="all", currentGeneroFilter=null, allItems=[];
 
 window.filterProducts = function(cat){
-  currentFilter = cat;
-  currentGeneroFilter = null;
-  document.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.cat === cat);
-  });
+  currentFilter=cat; currentGeneroFilter=null;
+  document.querySelectorAll(".filter-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.cat===cat));
   renderList(allItems);
 };
-
 window.filterByGenero = function(gen){
-  currentFilter = "all";
-  currentGeneroFilter = gen;
-  document.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.cat === gen);
-  });
+  currentFilter="all"; currentGeneroFilter=gen;
+  document.querySelectorAll(".filter-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.cat===gen));
   renderList(allItems);
 };
 
 function renderList(items){
-  const list = document.getElementById("productsList");
-  let filtered = items;
-  if(currentGeneroFilter){
-    filtered = items.filter(p => p.genero === currentGeneroFilter);
-  } else if(currentFilter !== "all"){
-    filtered = items.filter(p => p.categoria === currentFilter);
-  }
-
-  if(filtered.length === 0){
-    list.innerHTML = '<div class="empty">No hay productos en esta selección</div>';
-    return;
-  }
-
-  list.innerHTML = filtered.map(p => `
+  const list=document.getElementById("productsList");
+  let filtered=items;
+  if(currentGeneroFilter) filtered=items.filter(p=>p.genero===currentGeneroFilter);
+  else if(currentFilter!=="all") filtered=items.filter(p=>p.categoria===currentFilter);
+  if(filtered.length===0){list.innerHTML='<div class="empty">No hay productos en esta selección</div>';return;}
+  list.innerHTML=filtered.map(p=>`
     <div class="prod-row">
       <img class="prod-thumb" src="${p.imagen}" onerror="this.style.background='#333'" loading="lazy">
       <div class="prod-info">
-        <div class="cat-tag">${p.categoria || ""}${p.genero ? " · "+p.genero : ""}</div>
+        <div class="cat-tag">${p.categoria||""}${p.genero?" · "+p.genero:""}</div>
         <div class="pname">${p.nombre}</div>
         <div class="pmeta"><span class="badge ${p.agotado?"out":"avail"}">${p.agotado?"AGOTADO":"DISPONIBLE"}</span></div>
-        <div class="pprice">${p.sinPrecio ? "Consultar precio" : "Gs. "+Number(p.precio).toLocaleString("es-PY")}</div>
+        <div class="pprice">${p.sinPrecio?"Consultar precio":"Gs. "+Number(p.precio).toLocaleString("es-PY")}</div>
       </div>
       <button class="del-btn" onclick="deleteProduct('${p.id}')">🗑 Eliminar</button>
     </div>
   `).join("");
 }
 
-/* ════════════════════════════════════════
-   INIT
-════════════════════════════════════════ */
+/* ── INIT ── */
 initAuth();
 </script>
 </body>
