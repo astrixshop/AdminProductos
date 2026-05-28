@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASTRYX Admin</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f5f5f5;padding:30px;color:#222;}
+.container{max-width:1200px;margin:auto;}
+.card{background:white;padding:25px;border-radius:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,0.06);}
+h1{margin-bottom:20px;color:#25D366;}
+input,select,textarea{width:100%;padding:12px;margin-top:8px;margin-bottom:15px;border:1px solid #ddd;border-radius:10px;}
+button{border:none;padding:12px 20px;border-radius:10px;font-weight:bold;cursor:pointer;}
+.save-btn{background:#25D366;color:white;}
+.delete-btn{background:#ff3b30;color:white;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:15px;border-bottom:1px solid #ddd;text-align:left;}
+img{width:70px;height:70px;object-fit:cover;border-radius:10px;}
+.preview{width:150px;height:150px;object-fit:cover;border-radius:15px;margin-bottom:15px;display:none;}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="card">
+<h1>Panel Admin ASTRYX</h1>
+<form id="productForm">
+<label>Imagen desde galería</label>
+<input type="file" id="imageFile" accept="image/*" required>
+<img id="preview" class="preview">
+<label>Categoría</label>
+<select id="categoria">
+<option value="Camisetas">Camisetas</option>
+<option value="Pantalones">Pantalones</option>
+<option value="Chaquetas">Chaquetas</option>
+</select>
+<label>Precio</label>
+<input type="number" id="precio" required>
+<label><input type="checkbox" id="agotado"> Producto agotado</label>
+<br><br>
+<button type="submit" class="save-btn">Subir producto</button>
+</form>
+</div>
+<div class="card">
+<table>
+<thead><tr><th>Imagen</th><th>Nombre</th><th>Precio</th><th>Estado</th><th>Acciones</th></tr></thead>
+<tbody id="productsTableBody"></tbody>
+</table>
+</div>
+</div>
+<script>
+(function(){
+var _0x1a2b=function(a,k){var r="";for(var i=0;i<a.length;i++){r+=String.fromCharCode(a[i]^k.charCodeAt(i%k.length));}return r;};
+var _0xk="AstryxK3y!2026";
+var _0x1=[0,58,14,19,42,1,9,74,22,21,31,3,6,85,10,10,44,56,61,61,126,2,44,71,74,72,87,78,13,69,63,51,78,42,41,93,33,109,103];
+var _0x2=[32,0,0,0,16,0,56,71,22,83,87,29,84,82,119,17,23,92,31,17,57,86,27,64,65,85,83,70,49,93,23,29,20];
+var _0x3=[32,0,0,0,16,0,56,71,22,83,87,29,84,82,119,17,23];
+var _0x4=[32,0,0,0,16,0,56,71,22,83,87,29,84,82,119,17,23,92,31,17,57,86,27,64,65,85,65,66,46,1,21,21,28,86,42,67,9];
+var _0x5=[116,75,66,64,76,78,126,2,78,22,3,2];
+var _0x6=[112,73,65,74,79,74,126,5,76,16,5,7,3,4,123,4,17,16,67,79,125,4,72,16,11,81,11,87,121,23,17,71,77,26,124,82,73,16,84,5,7];
+var _0x8=[38,27,4,45,16,55,36,117,41,76,71,99,91,88,116,38,46,21,27,64,4,93,46,81,127,104,99,114,13,43,23,31,55,40,127,101,51,64,102,89];
+var _0x9=[32,0,0,0,16,0,56,91,22,81];
+var _0x10=[0,0,0,0,16,0,24,71,22,83,87];
+window.__d=function(){return{apiKey:_0x1a2b(_0x1,_0xk),authDomain:_0x1a2b(_0x2,_0xk),projectId:_0x1a2b(_0x3,_0xk),storageBucket:_0x1a2b(_0x4,_0xk),messagingSenderId:_0x1a2b(_0x5,_0xk),appId:_0x1a2b(_0x6,_0xk)};};
+window.__g=function(){return{t:_0x1a2b(_0x8,_0xk),u:_0x1a2b(_0x9,_0xk),r:_0x1a2b(_0x10,_0xk)};};
+document.getElementById("imageFile").addEventListener("change",function(e){
+var f=e.target.files[0];
+if(f){var p=document.getElementById("preview");p.src=URL.createObjectURL(f);p.style.display="block";}
+});
+var s=document.createElement('script');
+s.type='module';
+s.textContent=`
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,deleteDoc,doc}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+const app=initializeApp(window.__d());
+const db=getFirestore(app);
+let productCount=1;
+async function uploadToGitHub(file,fileName){
+const g=window.__g();
+const content=await fileToBase64(file);
+await fetch("https://api.github.com/repos/"+g.u+"/"+g.r+"/contents/images/"+fileName,{
+method:"PUT",
+headers:{Authorization:"token "+g.t,"Content-Type":"application/json"},
+body:JSON.stringify({message:"upload "+fileName,content:content})
+});
+return "https://"+g.u+".github.io/"+g.r+"/images/"+fileName;
+}
+function fileToBase64(file){
+return new Promise((resolve,reject)=>{
+const reader=new FileReader();
+reader.readAsDataURL(file);
+reader.onload=()=>resolve(reader.result.split(",")[1]);
+reader.onerror=e=>reject(e);
+});
+}
+async function loadProducts(){
+const qs=await getDocs(collection(db,"productos"));
+const tbody=document.getElementById("productsTableBody");
+tbody.innerHTML="";
+let count=1;
+qs.forEach(d=>{
+const p=d.data();
+tbody.innerHTML+=\`<tr>
+<td><img src="\${p.imagen}"></td>
+<td>\${p.nombre}</td>
+<td>$\${p.precio}</td>
+<td>\${p.agotado?"Agotado":"Disponible"}</td>
+<td><button class="delete-btn" onclick="deleteProduct('\${d.id}')">Eliminar</button></td>
+</tr>\`;
+count++;
+});
+productCount=count;
+}
+window.deleteProduct=async function(id){
+if(!confirm("¿Eliminar producto?"))return;
+await deleteDoc(doc(db,"productos",id));
+loadProducts();
+};
+document.getElementById("productForm").addEventListener("submit",async function(e){
+e.preventDefault();
+const file=document.getElementById("imageFile").files[0];
+const nombre="ropa-"+productCount;
+const imageUrl=await uploadToGitHub(file,nombre+".webp");
+await addDoc(collection(db,"productos"),{
+nombre:nombre,
+categoria:document.getElementById("categoria").value,
+precio:parseFloat(document.getElementById("precio").value),
+imagen:imageUrl,
+agotado:document.getElementById("agotado").checked
+});
+alert("Producto subido correctamente");
+document.getElementById("productForm").reset();
+document.getElementById("preview").style.display="none";
+loadProducts();
+});
+loadProducts();
+`;
+document.body.appendChild(s);
+})();
+</script>
+</body>
+</html>
