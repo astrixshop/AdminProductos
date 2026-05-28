@@ -5,59 +5,143 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ASTRYX Admin</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f5f5f5;padding:30px;color:#222;}
-.container{max-width:1200px;margin:auto;}
-.card{background:white;padding:25px;border-radius:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,0.06);}
-h1{margin-bottom:20px;color:#25D366;}
-input,select,textarea{width:100%;padding:12px;margin-top:8px;margin-bottom:15px;border:1px solid #ddd;border-radius:10px;}
-button{border:none;padding:12px 20px;border-radius:10px;font-weight:bold;cursor:pointer;}
-.save-btn{background:#25D366;color:white;width:100%;font-size:1rem;}
-.delete-btn{background:#ff3b30;color:white;}
-table{width:100%;border-collapse:collapse;}
-th,td{padding:15px;border-bottom:1px solid #ddd;text-align:left;}
-.thumb{width:70px;height:70px;object-fit:cover;border-radius:10px;}
-.preview{width:150px;height:150px;object-fit:cover;border-radius:15px;margin-bottom:15px;display:none;}
-#status{padding:10px;border-radius:10px;margin-top:10px;display:none;font-weight:bold;}
-.ok{background:#d4edda;color:#155724;}
-.err{background:#f8d7da;color:#721c24;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#0f0f0f;color:#fff;min-height:100vh;}
+
+.topbar{background:#111;border-bottom:1px solid #25D366;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-logo{font-size:1.4rem;font-weight:900;letter-spacing:6px;color:#25D366;}
+.topbar-sub{font-size:0.75rem;color:#666;margin-top:2px;}
+
+.main{max-width:1100px;margin:auto;padding:30px 20px;display:grid;grid-template-columns:380px 1fr;gap:24px;}
+@media(max-width:800px){.main{grid-template-columns:1fr;}}
+
+.panel{background:#1a1a1a;border-radius:20px;padding:28px;border:1px solid #2a2a2a;}
+.panel h2{font-size:1rem;font-weight:700;color:#25D366;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;}
+
+.field{margin-bottom:18px;}
+.field label{display:block;font-size:0.8rem;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;}
+.field input,.field select{width:100%;background:#111;border:1px solid #333;border-radius:12px;padding:13px 16px;color:#fff;font-size:0.95rem;outline:none;transition:border 0.2s;}
+.field input:focus,.field select:focus{border-color:#25D366;}
+.field select option{background:#111;}
+
+.img-upload{border:2px dashed #333;border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:border 0.2s;position:relative;}
+.img-upload:hover{border-color:#25D366;}
+.img-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.img-upload .icon{font-size:2rem;margin-bottom:8px;}
+.img-upload p{color:#666;font-size:0.85rem;}
+.preview-img{width:100%;max-height:200px;object-fit:cover;border-radius:12px;margin-top:12px;display:none;}
+
+.toggle-wrap{display:flex;align-items:center;gap:12px;padding:4px 0;}
+.toggle{position:relative;width:46px;height:26px;}
+.toggle input{opacity:0;width:0;height:0;}
+.slider{position:absolute;inset:0;background:#333;border-radius:26px;cursor:pointer;transition:0.3s;}
+.slider:before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:white;border-radius:50%;transition:0.3s;}
+input:checked+.slider{background:#25D366;}
+input:checked+.slider:before{transform:translateX(20px);}
+.toggle-label{font-size:0.9rem;color:#aaa;}
+
+.submit-btn{width:100%;background:#25D366;color:#000;border:none;padding:15px;border-radius:14px;font-weight:800;font-size:1rem;cursor:pointer;letter-spacing:1px;transition:0.2s;margin-top:8px;}
+.submit-btn:hover{background:#1fb558;}
+.submit-btn:disabled{background:#333;color:#666;cursor:not-allowed;}
+
+.status{padding:12px 16px;border-radius:12px;margin-top:14px;font-size:0.9rem;font-weight:600;display:none;}
+.status.ok{background:#0d2e1a;color:#25D366;border:1px solid #25D366;}
+.status.err{background:#2e0d0d;color:#ff5c5c;border:1px solid #ff3b30;}
+.status.info{background:#1a1a2e;color:#7b8cde;border:1px solid #3a3f8f;}
+
+.products-table{width:100%;}
+.products-table .empty{text-align:center;padding:40px;color:#444;}
+.prod-row{display:grid;grid-template-columns:70px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid #222;}
+.prod-row:last-child{border-bottom:none;}
+.prod-thumb{width:70px;height:70px;object-fit:cover;border-radius:12px;background:#222;}
+.prod-info .name{font-weight:700;font-size:0.95rem;margin-bottom:4px;}
+.prod-info .meta{font-size:0.8rem;color:#666;}
+.prod-info .price{font-size:1rem;font-weight:800;color:#25D366;margin-top:4px;}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;}
+.badge.ok{background:#0d2e1a;color:#25D366;}
+.badge.out{background:#2e0d0d;color:#ff5c5c;}
+.del-btn{background:#ff3b30;color:white;border:none;padding:8px 14px;border-radius:10px;font-size:0.8rem;font-weight:700;cursor:pointer;}
+.del-btn:hover{background:#cc2f26;}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.stat{background:#111;border-radius:14px;padding:16px;border:1px solid #222;text-align:center;}
+.stat .num{font-size:1.8rem;font-weight:900;color:#25D366;}
+.stat .lbl{font-size:0.75rem;color:#666;margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
 </style>
 </head>
 <body>
-<div class="container">
-<div class="card">
-<h1>Panel Admin ASTRYX</h1>
-<label>Nombre del producto</label>
-<input type="text" id="nombre" placeholder="Ej: Camiseta negra" required>
-<label>Imagen desde galería</label>
-<input type="file" id="imageFile" accept="image/*">
-<img id="preview" class="preview">
-<label>Categoría</label>
-<select id="categoria">
-<option value="Camisetas">Camisetas</option>
-<option value="Pantalones">Pantalones</option>
-<option value="Chaquetas">Chaquetas</option>
-</select>
-<label>Precio (Gs.)</label>
-<input type="number" id="precio" placeholder="Ej: 150000">
-<label><input type="checkbox" id="agotado"> Producto agotado</label>
-<br><br>
-<button class="save-btn" onclick="subirProducto()">Subir producto</button>
-<div id="status"></div>
+
+<div class="topbar">
+  <div>
+    <div class="topbar-logo">ASTRYX</div>
+    <div class="topbar-sub">Panel de administración</div>
+  </div>
+  <div style="font-size:0.75rem;color:#444;" id="connStatus">Conectando...</div>
 </div>
-<div class="card">
-<h2 style="margin-bottom:15px;">Productos cargados</h2>
-<table>
-<thead><tr><th>Imagen</th><th>Nombre</th><th>Precio</th><th>Estado</th><th>Acciones</th></tr></thead>
-<tbody id="productsTableBody"><tr><td colspan="5">Cargando...</td></tr></tbody>
-</table>
-</div>
+
+<div class="main">
+
+  <!-- FORM -->
+  <div class="panel">
+    <h2>Nuevo producto</h2>
+
+    <div class="field">
+      <label>Nombre</label>
+      <input type="text" id="nombre" placeholder="Ej: Remera negra oversize">
+    </div>
+
+    <div class="field">
+      <label>Imagen</label>
+      <div class="img-upload" id="uploadZone">
+        <input type="file" id="imageFile" accept="image/*">
+        <div class="icon">📷</div>
+        <p>Tocá para seleccionar imagen</p>
+      </div>
+      <img id="preview" class="preview-img">
+    </div>
+
+    <div class="field">
+      <label>Categoría</label>
+      <select id="categoria">
+        <option value="Camisetas">Camisetas</option>
+        <option value="Pantalones">Pantalones</option>
+        <option value="Chaquetas">Chaquetas</option>
+        <option value="Accesorios">Accesorios</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Precio (Gs.)</label>
+      <input type="number" id="precio" placeholder="Ej: 150000">
+    </div>
+
+    <div class="field">
+      <div class="toggle-wrap">
+        <label class="toggle"><input type="checkbox" id="agotado"><span class="slider"></span></label>
+        <span class="toggle-label">Marcar como agotado</span>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="subirProducto()">Subir producto</button>
+    <div class="status" id="status"></div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="panel">
+    <h2>Productos</h2>
+    <div class="stats">
+      <div class="stat"><div class="num" id="totalCount">-</div><div class="lbl">Total</div></div>
+      <div class="stat"><div class="num" id="availCount">-</div><div class="lbl">Disponibles</div></div>
+    </div>
+    <div class="products-table" id="productsList"><div class="empty">Cargando...</div></div>
+  </div>
+
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// XOR decode
 function xd(a,k){var r="";for(var i=0;i<a.length;i++){r+=String.fromCharCode(a[i]^k.charCodeAt(i%k.length));}return r;}
 var K="AstryxK3y!2026";
 var cfg={
@@ -75,14 +159,21 @@ var GR=xd([0,0,0,0,16,0,24,71,22,83,87],K);
 const app = initializeApp(cfg);
 const db = getFirestore(app);
 
+document.getElementById("connStatus").textContent = "✅ Conectado";
+
 document.getElementById("imageFile").addEventListener("change", function(e){
   const f = e.target.files[0];
-  if(f){ const p=document.getElementById("preview"); p.src=URL.createObjectURL(f); p.style.display="block"; }
+  if(f){
+    const p = document.getElementById("preview");
+    p.src = URL.createObjectURL(f);
+    p.style.display = "block";
+    document.querySelector("#uploadZone p").textContent = f.name;
+  }
 });
 
-function setStatus(msg, ok){
-  const s=document.getElementById("status");
-  s.textContent=msg; s.className=ok?"ok":"err"; s.style.display="block";
+function setStatus(msg, type){
+  const s = document.getElementById("status");
+  s.textContent = msg; s.className = "status " + type; s.style.display = "block";
 }
 
 async function uploadToGitHub(file, fileName){
@@ -92,16 +183,27 @@ async function uploadToGitHub(file, fileName){
     reader.onload = async () => {
       const content = reader.result.split(",")[1];
       try {
+        // Check if file exists first to get SHA
+        let sha = undefined;
+        const check = await fetch(`https://api.github.com/repos/${GU}/${GR}/contents/images/${fileName}`, {
+          headers: { Authorization: `token ${GT}` }
+        });
+        if(check.ok){ const existing = await check.json(); sha = existing.sha; }
+
+        const body = { message: `upload ${fileName}`, content: content };
+        if(sha) body.sha = sha;
+
         const res = await fetch(`https://api.github.com/repos/${GU}/${GR}/contents/images/${fileName}`, {
           method: "PUT",
           headers: { Authorization: `token ${GT}`, "Content-Type": "application/json" },
-          body: JSON.stringify({ message: `upload ${fileName}`, content: content })
+          body: JSON.stringify(body)
         });
-        if(!res.ok){ const e=await res.json(); reject(e.message); return; }
-        resolve(`https://${GU}.github.io/${GR}/images/${fileName}`);
-      } catch(e){ reject(e); }
+        if(!res.ok){ const e = await res.json(); reject(e.message); return; }
+        // Use jsdelivr CDN to avoid GitHub Pages cache issues
+        resolve(`https://cdn.jsdelivr.net/gh/${GU}/${GR}/images/${fileName}`);
+      } catch(e){ reject(e.toString()); }
     };
-    reader.onerror = reject;
+    reader.onerror = e => reject(e.toString());
   });
 }
 
@@ -109,66 +211,83 @@ window.subirProducto = async function(){
   const nombre = document.getElementById("nombre").value.trim();
   const precio = document.getElementById("precio").value;
   const file = document.getElementById("imageFile").files[0];
+  const btn = document.getElementById("submitBtn");
 
-  if(!nombre){ setStatus("Ingresá el nombre del producto", false); return; }
-  if(!precio){ setStatus("Ingresá el precio", false); return; }
-  if(!file){ setStatus("Seleccioná una imagen", false); return; }
+  if(!nombre){ setStatus("⚠️ Ingresá el nombre del producto", "err"); return; }
+  if(!precio){ setStatus("⚠️ Ingresá el precio", "err"); return; }
+  if(!file){ setStatus("⚠️ Seleccioná una imagen", "err"); return; }
 
-  setStatus("Subiendo imagen...", true);
+  btn.disabled = true; btn.textContent = "Subiendo...";
+  setStatus("📤 Subiendo imagen a GitHub...", "info");
 
   try {
-    const ext = file.name.split(".").pop();
-    const fileName = nombre.replace(/\s+/g,"-").toLowerCase() + "-" + Date.now() + "." + ext;
+    const ext = file.name.split(".").pop().toLowerCase();
+    const fileName = nombre.replace(/\s+/g,"-").replace(/[^a-zA-Z0-9\-]/g,"").toLowerCase() + "-" + Date.now() + "." + ext;
     const imageUrl = await uploadToGitHub(file, fileName);
 
-    setStatus("Guardando en Firestore...", true);
+    setStatus("💾 Guardando en base de datos...", "info");
 
     await addDoc(collection(db, "productos"), {
       nombre: nombre,
       categoria: document.getElementById("categoria").value,
       precio: parseFloat(precio),
       imagen: imageUrl,
-      agotado: document.getElementById("agotado").checked
+      agotado: document.getElementById("agotado").checked,
+      createdAt: Date.now()
     });
 
-    setStatus("✅ Producto subido correctamente", true);
-    document.getElementById("nombre").value="";
-    document.getElementById("precio").value="";
-    document.getElementById("imageFile").value="";
-    document.getElementById("preview").style.display="none";
-    document.getElementById("agotado").checked=false;
+    setStatus("✅ Producto subido correctamente", "ok");
+    document.getElementById("nombre").value = "";
+    document.getElementById("precio").value = "";
+    document.getElementById("imageFile").value = "";
+    document.getElementById("preview").style.display = "none";
+    document.querySelector("#uploadZone p").textContent = "Tocá para seleccionar imagen";
+    document.getElementById("agotado").checked = false;
     loadProducts();
   } catch(e){
-    setStatus("❌ Error: " + e, false);
+    setStatus("❌ Error: " + e, "err");
     console.error(e);
+  } finally {
+    btn.disabled = false; btn.textContent = "Subir producto";
   }
 };
 
 window.deleteProduct = async function(id){
   if(!confirm("¿Eliminar producto?")) return;
-  await deleteDoc(doc(db, "productos", id));
-  loadProducts();
+  try {
+    await deleteDoc(doc(db, "productos", id));
+    loadProducts();
+  } catch(e){ alert("Error al eliminar: " + e); }
 };
 
 async function loadProducts(){
-  const tbody = document.getElementById("productsTableBody");
-  tbody.innerHTML = "<tr><td colspan='5'>Cargando...</td></tr>";
+  const list = document.getElementById("productsList");
+  list.innerHTML = '<div class="empty">Cargando...</div>';
   try {
     const qs = await getDocs(collection(db, "productos"));
-    if(qs.empty){ tbody.innerHTML="<tr><td colspan='5'>No hay productos</td></tr>"; return; }
-    tbody.innerHTML="";
-    qs.forEach(d => {
-      const p = d.data();
-      tbody.innerHTML += `<tr>
-        <td><img class="thumb" src="${p.imagen}" onerror="this.src='https://via.placeholder.com/70'"></td>
-        <td>${p.nombre}</td>
-        <td>Gs. ${Number(p.precio).toLocaleString()}</td>
-        <td>${p.agotado?"Agotado":"Disponible"}</td>
-        <td><button class="delete-btn" onclick="deleteProduct('${d.id}')">Eliminar</button></td>
-      </tr>`;
-    });
+    if(qs.empty){
+      list.innerHTML = '<div class="empty">No hay productos aún</div>';
+      document.getElementById("totalCount").textContent = "0";
+      document.getElementById("availCount").textContent = "0";
+      return;
+    }
+    const items = [];
+    qs.forEach(d => items.push({id:d.id,...d.data()}));
+    document.getElementById("totalCount").textContent = items.length;
+    document.getElementById("availCount").textContent = items.filter(p=>!p.agotado).length;
+    list.innerHTML = items.map(p => `
+      <div class="prod-row">
+        <img class="prod-thumb" src="${p.imagen}" onerror="this.style.background='#333'">
+        <div class="prod-info">
+          <div class="name">${p.nombre}</div>
+          <div class="meta">${p.categoria} &nbsp;•&nbsp; <span class="badge ${p.agotado?'out':'ok'}">${p.agotado?'AGOTADO':'DISPONIBLE'}</span></div>
+          <div class="price">Gs. ${Number(p.precio).toLocaleString('es-PY')}</div>
+        </div>
+        <button class="del-btn" onclick="deleteProduct('${p.id}')">🗑</button>
+      </div>
+    `).join("");
   } catch(e){
-    tbody.innerHTML=`<tr><td colspan='5'>Error al cargar: ${e}</td></tr>`;
+    list.innerHTML = `<div class="empty" style="color:#ff5c5c;">Error: ${e}</div>`;
   }
 }
 
