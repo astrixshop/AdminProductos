@@ -4,69 +4,92 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ASTRYX Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#0f0f0f;color:#fff;min-height:100vh;}
+:root{
+  --green:#25D366;
+  --green-dark:#1aaa4f;
+  --bg:#0d0d0d;
+  --surface:#161616;
+  --surface2:#1e1e1e;
+  --border:#2a2a2a;
+  --text:#f0f0f0;
+  --text-muted:#666;
+  --red:#ff3b30;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-.topbar{background:#111;border-bottom:1px solid #25D366;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.topbar-logo{font-size:1.4rem;font-weight:900;letter-spacing:6px;color:#25D366;}
-.topbar-sub{font-size:0.75rem;color:#666;margin-top:2px;}
+.topbar{background:var(--surface);border-bottom:2px solid var(--green);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-logo{font-family:'Bebas Neue',cursive;font-size:1.6rem;letter-spacing:7px;color:var(--green);}
+.topbar-sub{font-size:0.7rem;color:var(--text-muted);margin-top:1px;letter-spacing:2px;text-transform:uppercase;}
+.conn-status{font-size:0.75rem;color:var(--text-muted);letter-spacing:1px;}
+.conn-status.ok{color:var(--green);}
+.conn-status.err{color:var(--red);}
 
-.main{max-width:1100px;margin:auto;padding:30px 20px;display:grid;grid-template-columns:380px 1fr;gap:24px;}
-@media(max-width:800px){.main{grid-template-columns:1fr;}}
+.main{max-width:1200px;margin:auto;padding:28px 20px;display:grid;grid-template-columns:380px 1fr;gap:22px;}
+@media(max-width:860px){.main{grid-template-columns:1fr;}}
 
-.panel{background:#1a1a1a;border-radius:20px;padding:28px;border:1px solid #2a2a2a;}
-.panel h2{font-size:1rem;font-weight:700;color:#25D366;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;}
+.panel{background:var(--surface);border-radius:20px;padding:26px;border:1px solid var(--border);}
+.panel-title{font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:3px;color:var(--green);margin-bottom:22px;text-transform:uppercase;display:flex;align-items:center;gap:10px;}
+.panel-title span{font-size:1.2rem;}
 
-.field{margin-bottom:18px;}
-.field label{display:block;font-size:0.8rem;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;}
-.field input,.field select{width:100%;background:#111;border:1px solid #333;border-radius:12px;padding:13px 16px;color:#fff;font-size:0.95rem;outline:none;transition:border 0.2s;}
-.field input:focus,.field select:focus{border-color:#25D366;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:0.72rem;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.2px;font-weight:600;}
+.field input,.field select{width:100%;background:#111;border:1.5px solid var(--border);border-radius:12px;padding:12px 16px;color:var(--text);font-size:0.93rem;outline:none;transition:border 0.2s;font-family:'DM Sans',sans-serif;}
+.field input:focus,.field select:focus{border-color:var(--green);}
 .field select option{background:#111;}
 
-.img-upload{border:2px dashed #333;border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:border 0.2s;position:relative;}
-.img-upload:hover{border-color:#25D366;}
+.img-upload{border:2px dashed var(--border);border-radius:14px;padding:22px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;background:#0d0d0d;}
+.img-upload:hover{border-color:var(--green);background:#0d150f;}
 .img-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-.img-upload .icon{font-size:2rem;margin-bottom:8px;}
-.img-upload p{color:#666;font-size:0.85rem;}
+.img-upload .icon{font-size:2.2rem;margin-bottom:8px;}
+.img-upload p{color:var(--text-muted);font-size:0.83rem;}
 .preview-img{width:100%;max-height:200px;object-fit:cover;border-radius:12px;margin-top:12px;display:none;}
 
 .toggle-wrap{display:flex;align-items:center;gap:12px;padding:4px 0;}
-.toggle{position:relative;width:46px;height:26px;}
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0;}
 .toggle input{opacity:0;width:0;height:0;}
-.slider{position:absolute;inset:0;background:#333;border-radius:26px;cursor:pointer;transition:0.3s;}
-.slider:before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:white;border-radius:50%;transition:0.3s;}
-input:checked+.slider{background:#25D366;}
-input:checked+.slider:before{transform:translateX(20px);}
-.toggle-label{font-size:0.9rem;color:#aaa;}
+.slider{position:absolute;inset:0;background:#333;border-radius:24px;cursor:pointer;transition:0.25s;}
+.slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:#888;border-radius:50%;transition:0.25s;}
+input:checked+.slider{background:var(--green);}
+input:checked+.slider:before{transform:translateX(20px);background:#fff;}
+.toggle-label{font-size:0.88rem;color:#aaa;}
 
-.submit-btn{width:100%;background:#25D366;color:#000;border:none;padding:15px;border-radius:14px;font-weight:800;font-size:1rem;cursor:pointer;letter-spacing:1px;transition:0.2s;margin-top:8px;}
-.submit-btn:hover{background:#1fb558;}
-.submit-btn:disabled{background:#333;color:#666;cursor:not-allowed;}
+.submit-btn{width:100%;background:var(--green);color:#000;border:none;padding:14px;border-radius:14px;font-weight:800;font-size:0.95rem;cursor:pointer;letter-spacing:1px;transition:all 0.2s;margin-top:8px;font-family:'DM Sans',sans-serif;text-transform:uppercase;}
+.submit-btn:hover{background:var(--green-dark);}
+.submit-btn:disabled{background:#2a2a2a;color:#444;cursor:not-allowed;}
 
-.status{padding:12px 16px;border-radius:12px;margin-top:14px;font-size:0.9rem;font-weight:600;display:none;}
-.status.ok{background:#0d2e1a;color:#25D366;border:1px solid #25D366;}
-.status.err{background:#2e0d0d;color:#ff5c5c;border:1px solid #ff3b30;}
-.status.info{background:#1a1a2e;color:#7b8cde;border:1px solid #3a3f8f;}
+.status{padding:12px 16px;border-radius:12px;margin-top:12px;font-size:0.88rem;font-weight:600;display:none;}
+.status.ok{background:#061a0d;color:var(--green);border:1px solid #0d4020;}
+.status.err{background:#1a0606;color:#ff5c5c;border:1px solid #4a1010;}
+.status.info{background:#06091a;color:#7b8cde;border:1px solid #1a2060;}
 
-.products-table{width:100%;}
-.products-table .empty{text-align:center;padding:40px;color:#444;}
-.prod-row{display:grid;grid-template-columns:70px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid #222;}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;}
+.stat{background:var(--surface2);border-radius:14px;padding:16px;border:1px solid var(--border);text-align:center;}
+.stat .num{font-family:'Bebas Neue',cursive;font-size:2rem;letter-spacing:2px;color:var(--green);}
+.stat .lbl{font-size:0.68rem;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
+
+.filter-bar{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none;flex-wrap:wrap;}
+.filter-bar::-webkit-scrollbar{display:none;}
+.filter-btn{background:transparent;border:1.5px solid var(--border);border-radius:100px;padding:6px 14px;color:var(--text-muted);font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-family:'DM Sans',sans-serif;letter-spacing:0.5px;text-transform:uppercase;}
+.filter-btn:hover{border-color:var(--green);color:var(--green);}
+.filter-btn.active{background:var(--green);border-color:var(--green);color:#000;}
+
+.prod-row{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);animation:fadeIn 0.3s ease;}
 .prod-row:last-child{border-bottom:none;}
-.prod-thumb{width:70px;height:70px;object-fit:cover;border-radius:12px;background:#222;}
-.prod-info .name{font-weight:700;font-size:0.95rem;margin-bottom:4px;}
-.prod-info .meta{font-size:0.8rem;color:#666;}
-.prod-info .price{font-size:1rem;font-weight:800;color:#25D366;margin-top:4px;}
-.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;}
-.badge.ok{background:#0d2e1a;color:#25D366;}
-.badge.out{background:#2e0d0d;color:#ff5c5c;}
-.del-btn{background:#ff3b30;color:white;border:none;padding:8px 14px;border-radius:10px;font-size:0.8rem;font-weight:700;cursor:pointer;}
-.del-btn:hover{background:#cc2f26;}
-
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
-.stat{background:#111;border-radius:14px;padding:16px;border:1px solid #222;text-align:center;}
-.stat .num{font-size:1.8rem;font-weight:900;color:#25D366;}
-.stat .lbl{font-size:0.75rem;color:#666;margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.prod-thumb{width:64px;height:64px;object-fit:cover;border-radius:10px;background:var(--surface2);}
+.prod-info .pname{font-weight:700;font-size:0.9rem;margin-bottom:3px;}
+.prod-info .pmeta{font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;}
+.prod-info .pprice{font-size:0.95rem;font-weight:700;color:var(--green);}
+.badge{display:inline-block;padding:2px 10px;border-radius:100px;font-size:0.65rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-left:6px;}
+.badge.avail{background:#061a0d;color:var(--green);}
+.badge.out{background:#1a0606;color:#ff5c5c;}
+.del-btn{background:#1a0606;color:var(--red);border:1px solid #3a1010;padding:8px 12px;border-radius:10px;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.del-btn:hover{background:var(--red);color:#fff;border-color:var(--red);}
+.empty{text-align:center;padding:40px;color:var(--text-muted);font-size:0.9rem;}
+.cat-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.68rem;font-weight:700;letter-spacing:0.5px;background:#1a2e1a;color:#4ade80;margin-bottom:4px;}
 </style>
 </head>
 <body>
@@ -74,19 +97,19 @@ input:checked+.slider:before{transform:translateX(20px);}
 <div class="topbar">
   <div>
     <div class="topbar-logo">ASTRYX</div>
-    <div class="topbar-sub">Panel de administración</div>
+    <div class="topbar-sub">Panel de Administración</div>
   </div>
-  <div style="font-size:0.75rem;color:#444;" id="connStatus">Conectando...</div>
+  <div class="conn-status" id="connStatus">Conectando...</div>
 </div>
 
 <div class="main">
 
-  <!-- FORM -->
+  <!-- ─── FORM ─── -->
   <div class="panel">
-    <h2>Nuevo producto</h2>
+    <div class="panel-title"><span>➕</span> Nuevo Producto</div>
 
     <div class="field">
-      <label>Nombre</label>
+      <label>Nombre del producto</label>
       <input type="text" id="nombre" placeholder="Ej: Remera negra oversize">
     </div>
 
@@ -95,23 +118,32 @@ input:checked+.slider:before{transform:translateX(20px);}
       <div class="img-upload" id="uploadZone">
         <input type="file" id="imageFile" accept="image/*">
         <div class="icon">📷</div>
-        <p>Tocá para seleccionar imagen</p>
+        <p id="uploadLabel">Tocá para seleccionar imagen</p>
       </div>
       <img id="preview" class="preview-img">
     </div>
 
     <div class="field">
-      <label>Categoría</label>
-      <select id="categoria">
-        <option value="Camisetas">Camisetas</option>
+      <label>Tipo</label>
+      <select id="tipo">
+        <option value="Remeras">Remeras</option>
+        <option value="Shorts">Shorts</option>
+        <option value="Boxers">Boxers</option>
         <option value="Pantalones">Pantalones</option>
-        <option value="Chaquetas">Chaquetas</option>
-        <option value="Accesorios">Accesorios</option>
+        <option value="Ropa Interior">Ropa Interior</option>
       </select>
     </div>
 
     <div class="field">
-      <div class="toggle-wrap" style="margin-bottom:10px;">
+      <label>Género</label>
+      <select id="genero">
+        <option value="Hombre">Hombre</option>
+        <option value="Mujer">Mujer</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <div class="toggle-wrap" style="margin-bottom:12px;">
         <label class="toggle"><input type="checkbox" id="sinPrecio" onchange="togglePrecio()"><span class="slider"></span></label>
         <span class="toggle-label">Precio a consultar</span>
       </div>
@@ -128,25 +160,39 @@ input:checked+.slider:before{transform:translateX(20px);}
       </div>
     </div>
 
-    <button class="submit-btn" id="submitBtn" onclick="subirProducto()">Subir producto</button>
+    <button class="submit-btn" id="submitBtn" onclick="subirProducto()">↑ Subir Producto</button>
     <div class="status" id="status"></div>
   </div>
 
-  <!-- PRODUCTS -->
+  <!-- ─── PRODUCTS LIST ─── -->
   <div class="panel">
-    <h2>Productos</h2>
+    <div class="panel-title"><span>📦</span> Productos</div>
+
     <div class="stats">
       <div class="stat"><div class="num" id="totalCount">-</div><div class="lbl">Total</div></div>
       <div class="stat"><div class="num" id="availCount">-</div><div class="lbl">Disponibles</div></div>
+      <div class="stat"><div class="num" id="outCount">-</div><div class="lbl">Agotados</div></div>
     </div>
-    <div class="products-table" id="productsList"><div class="empty">Cargando...</div></div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-cat="all" onclick="filterProducts('all')">Todos</button>
+      <button class="filter-btn" data-cat="Remeras" onclick="filterProducts('Remeras')">Remeras</button>
+      <button class="filter-btn" data-cat="Shorts" onclick="filterProducts('Shorts')">Shorts</button>
+      <button class="filter-btn" data-cat="Boxers" onclick="filterProducts('Boxers')">Boxers</button>
+      <button class="filter-btn" data-cat="Pantalones" onclick="filterProducts('Pantalones')">Pantalones</button>
+      <button class="filter-btn" data-cat="Ropa Interior" onclick="filterProducts('Ropa Interior')">Ropa Interior</button>
+      <button class="filter-btn" data-cat="Hombre" onclick="filterByGenero('Hombre')">Hombre</button>
+      <button class="filter-btn" data-cat="Mujer" onclick="filterByGenero('Mujer')">Mujer</button>
+    </div>
+
+    <div id="productsList"><div class="empty">Cargando...</div></div>
   </div>
 
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 function xd(a,k){var r="";for(var i=0;i<a.length;i++){r+=String.fromCharCode(a[i]^k.charCodeAt(i%k.length));}return r;}
 var K="AstryxK3y!2026";
@@ -166,6 +212,7 @@ const app = initializeApp(cfg);
 const db = getFirestore(app);
 
 document.getElementById("connStatus").textContent = "✅ Conectado";
+document.getElementById("connStatus").className = "conn-status ok";
 
 document.getElementById("imageFile").addEventListener("change", function(e){
   const f = e.target.files[0];
@@ -173,7 +220,7 @@ document.getElementById("imageFile").addEventListener("change", function(e){
     const p = document.getElementById("preview");
     p.src = URL.createObjectURL(f);
     p.style.display = "block";
-    document.querySelector("#uploadZone p").textContent = f.name;
+    document.getElementById("uploadLabel").textContent = f.name;
   }
 });
 
@@ -182,6 +229,11 @@ function setStatus(msg, type){
   s.textContent = msg; s.className = "status " + type; s.style.display = "block";
 }
 
+window.togglePrecio = function(){
+  document.getElementById("precioField").style.display =
+    document.getElementById("sinPrecio").checked ? "none" : "block";
+};
+
 async function uploadToGitHub(file, fileName){
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -189,23 +241,19 @@ async function uploadToGitHub(file, fileName){
     reader.onload = async () => {
       const content = reader.result.split(",")[1];
       try {
-        // Check if file exists first to get SHA
         let sha = undefined;
-        const check = await fetch(`https://api.github.com/repos/${GU}/${GR}/contents/images/${fileName}`, {
-          headers: { Authorization: `token ${GT}` }
+        const check = await fetch(`https://api.github.com/repos/${GU}/${GR}/contents/images/${fileName}`,{
+          headers:{Authorization:`token ${GT}`}
         });
         if(check.ok){ const existing = await check.json(); sha = existing.sha; }
-
-        const body = { message: `upload ${fileName}`, content: content };
+        const body = {message:`upload ${fileName}`, content};
         if(sha) body.sha = sha;
-
-        const res = await fetch(`https://api.github.com/repos/${GU}/${GR}/contents/images/${fileName}`, {
-          method: "PUT",
-          headers: { Authorization: `token ${GT}`, "Content-Type": "application/json" },
-          body: JSON.stringify(body)
+        const res = await fetch(`https://api.github.com/repos/${GU}/${GR}/contents/images/${fileName}`,{
+          method:"PUT",
+          headers:{Authorization:`token ${GT}`,"Content-Type":"application/json"},
+          body:JSON.stringify(body)
         });
         if(!res.ok){ const e = await res.json(); reject(e.message); return; }
-        // Use jsdelivr CDN to avoid GitHub Pages cache issues
         resolve(`https://cdn.jsdelivr.net/gh/${GU}/${GR}/images/${fileName}`);
       } catch(e){ reject(e.toString()); }
     };
@@ -213,100 +261,123 @@ async function uploadToGitHub(file, fileName){
   });
 }
 
-window.togglePrecio = function(){
-  const sinPrecio = document.getElementById("sinPrecio").checked;
-  document.getElementById("precioField").style.display = sinPrecio ? "none" : "block";
-};
-
 window.subirProducto = async function(){
   const nombre = document.getElementById("nombre").value.trim();
   const precio = document.getElementById("precio").value;
   const file = document.getElementById("imageFile").files[0];
   const btn = document.getElementById("submitBtn");
-
   const sinPrecio = document.getElementById("sinPrecio").checked;
-  if(!nombre){ setStatus("⚠️ Ingresá el nombre del producto", "err"); return; }
-  if(!sinPrecio && !precio){ setStatus("⚠️ Ingresá el precio o activá 'Precio a consultar'", "err"); return; }
-  if(!file){ setStatus("⚠️ Seleccioná una imagen", "err"); return; }
+  const agotado = document.getElementById("agotado").checked;
+  const tipo = document.getElementById("tipo").value;
+  const genero = document.getElementById("genero").value;
+
+  if(!nombre){ setStatus("⚠️ Ingresá el nombre del producto","err"); return; }
+  if(!sinPrecio && !precio){ setStatus("⚠️ Ingresá el precio o activá 'Precio a consultar'","err"); return; }
+  if(!file){ setStatus("⚠️ Seleccioná una imagen","err"); return; }
 
   btn.disabled = true; btn.textContent = "Subiendo...";
-  setStatus("📤 Subiendo imagen a GitHub...", "info");
+  setStatus("📤 Subiendo imagen a GitHub...","info");
 
   try {
     const ext = file.name.split(".").pop().toLowerCase();
-    const fileName = nombre.replace(/\s+/g,"-").replace(/[^a-zA-Z0-9\-]/g,"").toLowerCase() + "-" + Date.now() + "." + ext;
+    const fileName = nombre.replace(/\s+/g,"-").replace(/[^a-zA-Z0-9\-]/g,"").toLowerCase()+"-"+Date.now()+"."+ext;
     const imageUrl = await uploadToGitHub(file, fileName);
 
-    setStatus("💾 Guardando en base de datos...", "info");
+    setStatus("💾 Guardando en base de datos...","info");
 
-    await addDoc(collection(db, "productos"), {
-      nombre: nombre,
-      categoria: document.getElementById("categoria").value,
+    await addDoc(collection(db,"productos"),{
+      nombre,
+      categoria: tipo,
+      genero,
       precio: sinPrecio ? null : parseFloat(precio),
-      sinPrecio: sinPrecio,
-      imagen: imageUrl,
-      agotado: document.getElementById("agotado").checked,
+      sinPrecio, imagen: imageUrl, agotado,
       createdAt: Date.now()
     });
 
-    setStatus("✅ Producto subido correctamente", "ok");
-    document.getElementById("sinPrecio").checked = false;
-    document.getElementById("precioField").style.display = "block";
-    document.getElementById("nombre").value = "";
-    document.getElementById("precio").value = "";
-    document.getElementById("imageFile").value = "";
-    document.getElementById("preview").style.display = "none";
-    document.querySelector("#uploadZone p").textContent = "Tocá para seleccionar imagen";
-    document.getElementById("agotado").checked = false;
-    loadProducts();
+    setStatus("✅ Producto subido correctamente","ok");
+    ["nombre","precio"].forEach(id => document.getElementById(id).value="");
+    document.getElementById("imageFile").value="";
+    document.getElementById("preview").style.display="none";
+    document.getElementById("uploadLabel").textContent="Tocá para seleccionar imagen";
+    document.getElementById("sinPrecio").checked=false;
+    document.getElementById("agotado").checked=false;
+    document.getElementById("precioField").style.display="block";
   } catch(e){
-    setStatus("❌ Error: " + e, "err");
-    console.error(e);
+    setStatus("❌ Error: "+e,"err");
   } finally {
-    btn.disabled = false; btn.textContent = "Subir producto";
+    btn.disabled=false; btn.textContent="↑ Subir Producto";
   }
 };
 
 window.deleteProduct = async function(id){
-  if(!confirm("¿Eliminar producto?")) return;
-  try {
-    await deleteDoc(doc(db, "productos", id));
-    loadProducts();
-  } catch(e){ alert("Error al eliminar: " + e); }
+  if(!confirm("¿Eliminar este producto?")) return;
+  try { await deleteDoc(doc(db,"productos",id)); }
+  catch(e){ alert("Error al eliminar: "+e); }
 };
 
-async function loadProducts(){
+let currentFilter = "all";
+let currentGeneroFilter = null;
+let allItems = [];
+
+window.filterProducts = function(cat){
+  currentFilter = cat;
+  currentGeneroFilter = null;
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.cat === cat);
+  });
+  renderList(allItems);
+};
+
+window.filterByGenero = function(gen){
+  currentFilter = "all";
+  currentGeneroFilter = gen;
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.cat === gen);
+  });
+  renderList(allItems);
+};
+
+function renderList(items){
   const list = document.getElementById("productsList");
-  list.innerHTML = '<div class="empty">Cargando...</div>';
-  try {
-    const qs = await getDocs(collection(db, "productos"));
-    if(qs.empty){
-      list.innerHTML = '<div class="empty">No hay productos aún</div>';
-      document.getElementById("totalCount").textContent = "0";
-      document.getElementById("availCount").textContent = "0";
-      return;
-    }
-    const items = [];
-    qs.forEach(d => items.push({id:d.id,...d.data()}));
-    document.getElementById("totalCount").textContent = items.length;
-    document.getElementById("availCount").textContent = items.filter(p=>!p.agotado).length;
-    list.innerHTML = items.map(p => `
-      <div class="prod-row">
-        <img class="prod-thumb" src="${p.imagen}" onerror="this.style.background='#333'">
-        <div class="prod-info">
-          <div class="name">${p.nombre}</div>
-          <div class="meta">${p.categoria} &nbsp;•&nbsp; <span class="badge ${p.agotado?'out':'ok'}">${p.agotado?'AGOTADO':'DISPONIBLE'}</span></div>
-          <div class="price">Gs. ${Number(p.precio).toLocaleString('es-PY')}</div>
-        </div>
-        <button class="del-btn" onclick="deleteProduct('${p.id}')">🗑</button>
-      </div>
-    `).join("");
-  } catch(e){
-    list.innerHTML = `<div class="empty" style="color:#ff5c5c;">Error: ${e}</div>`;
+  let filtered = items;
+  if(currentGeneroFilter){
+    filtered = items.filter(p => p.genero === currentGeneroFilter);
+  } else if(currentFilter !== "all"){
+    filtered = items.filter(p => p.categoria === currentFilter);
   }
+
+  if(filtered.length === 0){
+    list.innerHTML = '<div class="empty">No hay productos en esta selección</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(p => `
+    <div class="prod-row">
+      <img class="prod-thumb" src="${p.imagen}" onerror="this.style.background='#333'" loading="lazy">
+      <div class="prod-info">
+        <div class="cat-tag">${p.categoria || ""}${p.genero ? " · "+p.genero : ""}</div>
+        <div class="pname">${p.nombre}</div>
+        <div class="pmeta"><span class="badge ${p.agotado?"out":"avail"}">${p.agotado?"AGOTADO":"DISPONIBLE"}</span></div>
+        <div class="pprice">${p.sinPrecio ? "Consultar precio" : "Gs. "+Number(p.precio).toLocaleString("es-PY")}</div>
+      </div>
+      <button class="del-btn" onclick="deleteProduct('${p.id}')">🗑 Eliminar</button>
+    </div>
+  `).join("");
 }
 
-loadProducts();
+onSnapshot(collection(db,"productos"), function(qs){
+  allItems = [];
+  qs.forEach(d => allItems.push({id:d.id,...d.data()}));
+  allItems.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  document.getElementById("totalCount").textContent = allItems.length;
+  document.getElementById("availCount").textContent = allItems.filter(p=>!p.agotado).length;
+  document.getElementById("outCount").textContent = allItems.filter(p=>p.agotado).length;
+  renderList(allItems);
+}, function(e){
+  document.getElementById("connStatus").textContent = "❌ Sin conexión";
+  document.getElementById("connStatus").className = "conn-status err";
+  document.getElementById("productsList").innerHTML = `<div class="empty" style="color:#ff5c5c;">Error: ${e.message}</div>`;
+});
 </script>
 </body>
 </html>
