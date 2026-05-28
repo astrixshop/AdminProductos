@@ -556,7 +556,7 @@ async function uploadToGitHub(file, fileName){
         if(sha) body.sha=sha;
         const res = await fetch(`https://api.github.com/repos/${GU}/${GR}/contents/images/${fileName}`,{method:"PUT",headers:{Authorization:`token ${GT}`,"Content-Type":"application/json"},body:JSON.stringify(body)});
         if(!res.ok){const e=await res.json();reject(e.message);return;}
-        resolve(`https://cdn.jsdelivr.net/gh/${GU}/${GR}/images/${fileName}`);
+        resolve(`https://raw.githubusercontent.com/${GU}/${GR}/main/images/${fileName}`);
       }catch(e){reject(e.toString());}
     };
     reader.onerror=e=>reject(e.toString());
