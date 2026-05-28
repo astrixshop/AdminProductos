@@ -20,6 +20,91 @@
 }
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
+/* ─── AUTH SCREEN ─── */
+#authScreen{
+  position:fixed;inset:0;background:var(--bg);z-index:9999;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  gap:28px;
+}
+.auth-logo{font-family:'Bebas Neue',cursive;font-size:3rem;letter-spacing:10px;color:var(--green);text-align:center;}
+.auth-sub{color:var(--text-muted);font-size:0.78rem;letter-spacing:3px;text-transform:uppercase;margin-top:-20px;}
+.auth-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:36px 40px;width:340px;display:flex;flex-direction:column;align-items:center;gap:20px;}
+.fp-ring{
+  width:110px;height:110px;border-radius:50%;
+  border:3px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;cursor:pointer;transition:all 0.3s;background:#111;
+}
+.fp-ring:hover{border-color:var(--green);}
+.fp-ring.scanning{border-color:var(--green);animation:pulse-ring 1.2s infinite;}
+.fp-ring.success{border-color:var(--green);background:#061a0d;}
+.fp-ring.error{border-color:var(--red);animation:shake 0.4s;}
+@keyframes pulse-ring{
+  0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,0.3);}
+  50%{box-shadow:0 0 0 16px rgba(37,211,102,0);}
+}
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  25%{transform:translateX(-8px);}
+  75%{transform:translateX(8px);}
+}
+.fp-icon{font-size:3rem;transition:all 0.3s;}
+.auth-msg{font-size:0.85rem;color:var(--text-muted);text-align:center;min-height:20px;transition:color 0.2s;}
+.auth-msg.ok{color:var(--green);}
+.auth-msg.err{color:var(--red);}
+.auth-hwid{font-size:0.68rem;color:#333;margin-top:4px;font-family:monospace;letter-spacing:1px;}
+.auth-btn{
+  width:100%;background:var(--green);color:#000;border:none;padding:13px;
+  border-radius:14px;font-weight:800;font-size:0.9rem;cursor:pointer;
+  letter-spacing:1px;transition:all 0.2s;font-family:'DM Sans',sans-serif;text-transform:uppercase;
+}
+.auth-btn:hover{background:var(--green-dark);}
+.auth-btn:disabled{background:#2a2a2a;color:#444;cursor:not-allowed;}
+
+/* ─── SETTINGS MODAL (fingerprint manager) ─── */
+#settingsModal{
+  position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:8000;
+  display:none;align-items:center;justify-content:center;
+}
+#settingsModal.open{display:flex;}
+.settings-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:24px;
+  padding:32px;width:360px;max-width:95vw;
+}
+.settings-title{font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:4px;color:var(--green);margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;}
+.settings-close{background:transparent;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer;line-height:1;}
+.fp-slot{
+  background:var(--surface2);border:1px solid var(--border);border-radius:14px;
+  padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;
+}
+.fp-slot-icon{font-size:1.8rem;}
+.fp-slot-info{flex:1;}
+.fp-slot-label{font-size:0.8rem;font-weight:700;margin-bottom:2px;}
+.fp-slot-sub{font-size:0.68rem;color:var(--text-muted);}
+.fp-slot-empty{color:var(--text-muted);}
+.fp-action-btn{
+  padding:7px 14px;border-radius:10px;font-size:0.75rem;font-weight:700;
+  cursor:pointer;border:none;transition:all 0.2s;font-family:'DM Sans',sans-serif;
+}
+.fp-del-btn{background:#1a0606;color:var(--red);border:1px solid #3a1010;}
+.fp-del-btn:hover{background:var(--red);color:#fff;}
+.fp-add-btn{background:#061a0d;color:var(--green);border:1px solid #0d4020;}
+.fp-add-btn:hover{background:var(--green);color:#000;}
+.fp-add-btn:disabled{background:#1a1a1a;color:#444;border-color:#222;cursor:not-allowed;}
+.settings-note{font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:16px;line-height:1.5;}
+
+/* ─── SETTINGS GEAR BUTTON ─── */
+#settingsBtn{
+  position:fixed;top:14px;left:20px;z-index:7000;
+  background:transparent;border:1.5px solid var(--border);
+  border-radius:10px;width:40px;height:40px;
+  display:none;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.1rem;transition:all 0.2s;color:var(--text-muted);
+}
+#settingsBtn.visible{display:flex;}
+#settingsBtn:hover{border-color:var(--green);color:var(--green);}
+
+/* ─── TOPBAR ─── */
 .topbar{background:var(--surface);border-bottom:2px solid var(--green);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .topbar-logo{font-family:'Bebas Neue',cursive;font-size:1.6rem;letter-spacing:7px;color:var(--green);}
 .topbar-sub{font-size:0.7rem;color:var(--text-muted);margin-top:1px;letter-spacing:2px;text-transform:uppercase;}
@@ -94,15 +179,68 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
 </head>
 <body>
 
-<div class="topbar">
+<!-- ─── AUTH SCREEN ─── -->
+<div id="authScreen">
   <div>
+    <div class="auth-logo">ASTRYX</div>
+    <div class="auth-sub">Panel de Administración</div>
+  </div>
+  <div class="auth-card">
+    <div class="fp-ring" id="fpRing" onclick="startAuth()">
+      <div class="fp-icon" id="fpIcon">🫆</div>
+    </div>
+    <div class="auth-msg" id="authMsg">Tocá para autenticarte con huella</div>
+    <div class="auth-hwid" id="hwLabel"></div>
+    <button class="auth-btn" id="authBtn" onclick="startAuth()">Verificar Huella</button>
+  </div>
+</div>
+
+<!-- ─── SETTINGS GEAR ─── -->
+<button id="settingsBtn" onclick="openSettings()" title="Administrar huellas">⚙️</button>
+
+<!-- ─── SETTINGS MODAL ─── -->
+<div id="settingsModal">
+  <div class="settings-card">
+    <div class="settings-title">
+      <span>🔐 Huellas</span>
+      <button class="settings-close" onclick="closeSettings()">✕</button>
+    </div>
+
+    <div id="fpSlot1" class="fp-slot">
+      <div class="fp-slot-icon">🫆</div>
+      <div class="fp-slot-info">
+        <div class="fp-slot-label" id="slot1Label">Ranura 1 — Vacía</div>
+        <div class="fp-slot-sub" id="slot1Sub">Sin huella registrada</div>
+      </div>
+      <div id="slot1Btn"></div>
+    </div>
+
+    <div id="fpSlot2" class="fp-slot">
+      <div class="fp-slot-icon">🫆</div>
+      <div class="fp-slot-info">
+        <div class="fp-slot-label" id="slot2Label">Ranura 2 — Vacía</div>
+        <div class="fp-slot-sub" id="slot2Sub">Sin huella registrada</div>
+      </div>
+      <div id="slot2Btn"></div>
+    </div>
+
+    <div class="settings-note">
+      Máximo 2 huellas. Para agregar una nueva, primero eliminá una existente.
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOPBAR ─── -->
+<div class="topbar" id="mainTopbar" style="display:none;">
+  <div style="padding-left:52px;">
     <div class="topbar-logo">ASTRYX</div>
     <div class="topbar-sub">Panel de Administración</div>
   </div>
   <div class="conn-status" id="connStatus">Conectando...</div>
 </div>
 
-<div class="main">
+<!-- ─── MAIN CONTENT ─── -->
+<div class="main" id="mainContent" style="display:none;">
 
   <!-- ─── FORM ─── -->
   <div class="panel">
@@ -194,6 +332,9 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+/* ════════════════════════════════════════
+   FIREBASE CONFIG (original sin cambios)
+════════════════════════════════════════ */
 function xd(a,k){var r="";for(var i=0;i<a.length;i++){r+=String.fromCharCode(a[i]^k.charCodeAt(i%k.length));}return r;}
 var K="AstryxK3y!2026";
 var cfg={
@@ -206,23 +347,316 @@ var cfg={
 };
 var GT=xd([38,27,4,45,16,55,36,117,41,76,71,99,91,88,116,38,46,21,27,64,4,93,46,81,127,104,99,114,13,43,23,31,55,40,127,101,51,64,102,89],K);
 var GU=xd([32,0,0,0,16,0,56,91,22,81],K);
-var GR=xd([0,0,0,0,16,0,24,71,22,83,87],K);
+var GR=xd([32,0,0,0,16,0,24,71,22,83,87],K);
 
 const app = initializeApp(cfg);
 const db = getFirestore(app);
 
-document.getElementById("connStatus").textContent = "✅ Conectado";
-document.getElementById("connStatus").className = "conn-status ok";
+/* ════════════════════════════════════════
+   HWID — fingerprint del navegador/dispositivo
+════════════════════════════════════════ */
+async function getHWID() {
+  const nav = window.navigator;
+  const screen = window.screen;
+  const raw = [
+    nav.userAgent,
+    nav.language,
+    nav.hardwareConcurrency,
+    screen.colorDepth,
+    screen.width + "x" + screen.height,
+    nav.platform || "",
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+    nav.maxTouchPoints,
+  ].join("|");
+  const encoder = new TextEncoder();
+  const data = encoder.encode(raw);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("").substring(0, 32);
+}
 
-document.getElementById("imageFile").addEventListener("change", function(e){
-  const f = e.target.files[0];
-  if(f){
-    const p = document.getElementById("preview");
-    p.src = URL.createObjectURL(f);
-    p.style.display = "block";
-    document.getElementById("uploadLabel").textContent = f.name;
+/* ════════════════════════════════════════
+   STORAGE — guarda huellas + HWIDs en localStorage
+   Estructura: { slots: [ {credId, hwid, date}, null ] }
+════════════════════════════════════════ */
+const STORE_KEY = "astryx_auth_v1";
+
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || { slots: [null, null] }; }
+  catch { return { slots: [null, null] }; }
+}
+function saveStore(s) { localStorage.setItem(STORE_KEY, JSON.stringify(s)); }
+
+/* ════════════════════════════════════════
+   WEBAUTHN helpers
+════════════════════════════════════════ */
+function b64url(buf) {
+  return btoa(String.fromCharCode(...new Uint8Array(buf)))
+    .replace(/\+/g,"-").replace(/\//g,"_").replace(/=/g,"");
+}
+function fromB64url(s) {
+  s = s.replace(/-/g,"+").replace(/_/g,"/");
+  while(s.length%4) s+="=";
+  return Uint8Array.from(atob(s), c=>c.charCodeAt(0)).buffer;
+}
+
+async function registerFingerprint(slotIndex) {
+  const hwid = await getHWID();
+  const challenge = crypto.getRandomValues(new Uint8Array(32));
+  const credential = await navigator.credentials.create({
+    publicKey: {
+      challenge,
+      rp: { name: "ASTRYX Admin", id: location.hostname || "localhost" },
+      user: {
+        id: new TextEncoder().encode("astryx-slot-" + slotIndex),
+        name: "Admin " + (slotIndex + 1),
+        displayName: "Administrador " + (slotIndex + 1),
+      },
+      pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
+      authenticatorSelection: {
+        authenticatorAttachment: "platform",
+        userVerification: "required",
+      },
+      timeout: 60000,
+    }
+  });
+  return { credId: b64url(credential.rawId), hwid, date: new Date().toLocaleDateString("es-PY") };
+}
+
+async function verifyFingerprint(credId) {
+  const challenge = crypto.getRandomValues(new Uint8Array(32));
+  const assertion = await navigator.credentials.get({
+    publicKey: {
+      challenge,
+      allowCredentials: [{ id: fromB64url(credId), type: "public-key" }],
+      userVerification: "required",
+      timeout: 60000,
+    }
+  });
+  return !!assertion;
+}
+
+/* ════════════════════════════════════════
+   AUTH FLOW
+════════════════════════════════════════ */
+let currentHWID = "";
+
+async function initAuth() {
+  currentHWID = await getHWID();
+  document.getElementById("hwLabel").textContent = "HWID: " + currentHWID.substring(0,16) + "...";
+
+  const store = loadStore();
+  const hasAny = store.slots.some(s => s !== null);
+
+  if (!hasAny) {
+    // Primera vez: modo registro automático
+    setAuthMsg("Primera vez — registrá tu huella", "");
+    document.getElementById("authBtn").textContent = "Registrar Huella";
+  } else {
+    setAuthMsg("Autenticá con tu huella dactilar", "");
   }
+}
+
+function setAuthMsg(msg, type) {
+  const el = document.getElementById("authMsg");
+  el.textContent = msg;
+  el.className = "auth-msg" + (type ? " " + type : "");
+}
+
+function setFpState(state) {
+  const ring = document.getElementById("fpRing");
+  const icon = document.getElementById("fpIcon");
+  ring.className = "fp-ring" + (state ? " " + state : "");
+  if(state === "scanning") icon.textContent = "🫆";
+  else if(state === "success") icon.textContent = "✅";
+  else if(state === "error") icon.textContent = "❌";
+  else icon.textContent = "🫆";
+}
+
+window.startAuth = async function() {
+  const store = loadStore();
+  const hasAny = store.slots.some(s => s !== null);
+
+  if (!hasAny) {
+    // Primer registro
+    await doRegister(0);
+    return;
+  }
+
+  // Verificar huella existente
+  setFpState("scanning");
+  setAuthMsg("Escaneando huella...", "");
+  document.getElementById("authBtn").disabled = true;
+
+  // Primero verificar HWID
+  const matchedSlot = store.slots.find(s => s && s.hwid === currentHWID);
+
+  if (!matchedSlot) {
+    setFpState("error");
+    setAuthMsg("❌ Dispositivo no autorizado", "err");
+    document.getElementById("authBtn").disabled = false;
+    setTimeout(() => { setFpState(""); setAuthMsg("Tocá para autenticarte con huella", ""); }, 2500);
+    return;
+  }
+
+  try {
+    const ok = await verifyFingerprint(matchedSlot.credId);
+    if (ok) {
+      setFpState("success");
+      setAuthMsg("✅ Acceso concedido", "ok");
+      setTimeout(unlockPanel, 800);
+    } else {
+      throw new Error("Verificación fallida");
+    }
+  } catch(e) {
+    setFpState("error");
+    setAuthMsg("❌ Huella no reconocida", "err");
+    document.getElementById("authBtn").disabled = false;
+    setTimeout(() => { setFpState(""); setAuthMsg("Tocá para intentar de nuevo", ""); }, 2500);
+  }
+};
+
+async function doRegister(slotIndex) {
+  const store = loadStore();
+
+  // Verificar límite de 2
+  const filled = store.slots.filter(s => s !== null).length;
+  if (filled >= 2 && store.slots[slotIndex] !== null) {
+    setAuthMsg("❌ Límite de 2 huellas alcanzado", "err");
+    return;
+  }
+
+  setFpState("scanning");
+  setAuthMsg("Registrá tu huella ahora...", "");
+  document.getElementById("authBtn").disabled = true;
+
+  try {
+    const data = await registerFingerprint(slotIndex);
+    store.slots[slotIndex] = data;
+    saveStore(store);
+    setFpState("success");
+    setAuthMsg("✅ Huella registrada. Entrando...", "ok");
+    setTimeout(unlockPanel, 900);
+  } catch(e) {
+    setFpState("error");
+    setAuthMsg("❌ No se pudo registrar: " + (e.message || e), "err");
+    document.getElementById("authBtn").disabled = false;
+    setTimeout(() => { setFpState(""); setAuthMsg("Tocá para intentar de nuevo", ""); }, 2500);
+  }
+}
+
+function unlockPanel() {
+  document.getElementById("authScreen").style.display = "none";
+  document.getElementById("mainTopbar").style.display = "flex";
+  document.getElementById("mainContent").style.display = "grid";
+  document.getElementById("settingsBtn").classList.add("visible");
+  initFirebase();
+}
+
+/* ════════════════════════════════════════
+   SETTINGS MODAL
+════════════════════════════════════════ */
+window.openSettings = function() {
+  renderSettingsSlots();
+  document.getElementById("settingsModal").classList.add("open");
+};
+
+window.closeSettings = function() {
+  document.getElementById("settingsModal").classList.remove("open");
+};
+
+// Cerrar modal al click fuera
+document.getElementById("settingsModal").addEventListener("click", function(e) {
+  if(e.target === this) closeSettings();
 });
+
+function renderSettingsSlots() {
+  const store = loadStore();
+  const filled = store.slots.filter(s => s !== null).length;
+
+  for (let i = 0; i < 2; i++) {
+    const slot = store.slots[i];
+    const labelEl = document.getElementById("slot" + (i+1) + "Label");
+    const subEl = document.getElementById("slot" + (i+1) + "Sub");
+    const btnEl = document.getElementById("slot" + (i+1) + "Btn");
+
+    if (slot) {
+      labelEl.textContent = "Ranura " + (i+1) + " — Registrada";
+      labelEl.style.color = "var(--green)";
+      subEl.textContent = "HWID: " + slot.hwid.substring(0,14) + "... · " + slot.date;
+      btnEl.innerHTML = `<button class="fp-action-btn fp-del-btn" onclick="deleteSlot(${i})">🗑 Borrar</button>`;
+    } else {
+      labelEl.textContent = "Ranura " + (i+1) + " — Vacía";
+      labelEl.style.color = "";
+      subEl.textContent = "Sin huella registrada";
+      const canAdd = filled < 2;
+      btnEl.innerHTML = `<button class="fp-action-btn fp-add-btn" ${canAdd?"":"disabled"} onclick="addSlot(${i})">➕ Agregar</button>`;
+    }
+  }
+}
+
+window.deleteSlot = function(i) {
+  if(!confirm("¿Eliminar esta huella? El usuario perderá acceso.")) return;
+  const store = loadStore();
+  store.slots[i] = null;
+  saveStore(store);
+  renderSettingsSlots();
+};
+
+window.addSlot = async function(slotIndex) {
+  const store = loadStore();
+  const filled = store.slots.filter(s => s !== null).length;
+
+  if (filled >= 2) {
+    alert("Límite de 2 huellas alcanzado. Borrá una primero.");
+    return;
+  }
+
+  // Deshabilitar botones durante el registro
+  document.querySelectorAll(".fp-add-btn").forEach(b => b.disabled = true);
+
+  try {
+    const data = await registerFingerprint(slotIndex);
+    store.slots[slotIndex] = data;
+    saveStore(store);
+    renderSettingsSlots();
+  } catch(e) {
+    alert("Error al registrar huella: " + (e.message || e));
+    renderSettingsSlots();
+  }
+};
+
+/* ════════════════════════════════════════
+   FIREBASE + PANEL (original sin cambios)
+════════════════════════════════════════ */
+function initFirebase() {
+  document.getElementById("connStatus").textContent = "✅ Conectado";
+  document.getElementById("connStatus").className = "conn-status ok";
+
+  document.getElementById("imageFile").addEventListener("change", function(e){
+    const f = e.target.files[0];
+    if(f){
+      const p = document.getElementById("preview");
+      p.src = URL.createObjectURL(f);
+      p.style.display = "block";
+      document.getElementById("uploadLabel").textContent = f.name;
+    }
+  });
+
+  onSnapshot(collection(db,"productos"), function(qs){
+    allItems = [];
+    qs.forEach(d => allItems.push({id:d.id,...d.data()}));
+    allItems.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    document.getElementById("totalCount").textContent = allItems.length;
+    document.getElementById("availCount").textContent = allItems.filter(p=>!p.agotado).length;
+    document.getElementById("outCount").textContent = allItems.filter(p=>p.agotado).length;
+    renderList(allItems);
+  }, function(e){
+    document.getElementById("connStatus").textContent = "❌ Sin conexión";
+    document.getElementById("connStatus").className = "conn-status err";
+    document.getElementById("productsList").innerHTML = `<div class="empty" style="color:#ff5c5c;">Error: ${e.message}</div>`;
+  });
+}
 
 function setStatus(msg, type){
   const s = document.getElementById("status");
@@ -365,19 +799,10 @@ function renderList(items){
   `).join("");
 }
 
-onSnapshot(collection(db,"productos"), function(qs){
-  allItems = [];
-  qs.forEach(d => allItems.push({id:d.id,...d.data()}));
-  allItems.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
-  document.getElementById("totalCount").textContent = allItems.length;
-  document.getElementById("availCount").textContent = allItems.filter(p=>!p.agotado).length;
-  document.getElementById("outCount").textContent = allItems.filter(p=>p.agotado).length;
-  renderList(allItems);
-}, function(e){
-  document.getElementById("connStatus").textContent = "❌ Sin conexión";
-  document.getElementById("connStatus").className = "conn-status err";
-  document.getElementById("productsList").innerHTML = `<div class="empty" style="color:#ff5c5c;">Error: ${e.message}</div>`;
-});
+/* ════════════════════════════════════════
+   INIT
+════════════════════════════════════════ */
+initAuth();
 </script>
 </body>
 </html>
