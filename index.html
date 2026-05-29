@@ -192,8 +192,9 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
     <div class="field">
       <label>Género</label>
       <select id="genero">
-        <option value="Hombre">Hombre</option>
         <option value="Mujer">Mujer</option>
+        <option value="Hombre">Hombre</option>
+        <option value="Unisex">Unisex</option>
       </select>
     </div>
     <div class="field">
@@ -230,8 +231,9 @@ input:checked+.slider:before{transform:translateX(20px);background:#fff;}
       <button class="filter-btn" data-cat="Boxers" onclick="filterProducts('Boxers')">Boxers</button>
       <button class="filter-btn" data-cat="Pantalones" onclick="filterProducts('Pantalones')">Pantalones</button>
       <button class="filter-btn" data-cat="Ropa Interior" onclick="filterProducts('Ropa Interior')">Ropa Interior</button>
-      <button class="filter-btn" data-cat="Hombre" onclick="filterByGenero('Hombre')">Hombre</button>
       <button class="filter-btn" data-cat="Mujer" onclick="filterByGenero('Mujer')">Mujer</button>
+      <button class="filter-btn" data-cat="Hombre" onclick="filterByGenero('Hombre')">Hombre</button>
+      <button class="filter-btn" data-cat="Unisex" onclick="filterByGenero('Unisex')">Unisex</button>
     </div>
     <div id="productsList"><div class="empty">Cargando...</div></div>
   </div>
